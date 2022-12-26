@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragment/header.html :: fragment-header}"></th:block>
+	<link rel="stylesheet" href="/css/erdLayout.css"/>
+</head>
+
+<style>
+.btn-bottom-btn-inline a, .btn-bottom-btn-inline button {
+    padding: 5px 20px;
+    background: #f2f4f7;
+    border: 1px solid #cbcbcb;
+    display: inline-block;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
+
+<body>
+    <th:block th:replace="~{fragment/navbar.html :: fragment-navbar}"></th:block>
+
+	<div class="content">
+		<div class="wrap">
+			<div class="left">
+	            <div class="menu">
+	                <h3>직원관리</h3>
+	                <a th:href="@{/staff/list}">직원목록</a>
+	                <a th:href="@{/dept/list}">부서목록</a>
+	                <a class="on" th:href="@{/rnk/list}">직급목록</a>
+	                <th:block th:if="${session.authNo == 1}">
+	                <a th:href="@{/staff/add}">직원등록</a>
+	                <a th:href="@{/dept/add}">부서등록</a>
+	                <a th:href="@{/rnk/add}">직급등록</a>
+	                </th:block>
+	            </div>
+	        </div>
+	        
+	        <form method="get" id="listForm">
+		      	<!-- hidden -->
+				<input type="hidden" id="endPg" name="endPg" th:value="${pgn.endPg}">
+				<input type="hidden" id="startPg" name="startPg" th:value="${pgn.startPg}">
+				<input type="hidden" id="nowPg" name="nowPg" th:value="${pgn.nowPg}">
+	        
+	        	<div id='content' class='right'>
+		            <!-- 컨텐츠 안내 -->
+		            <div class="title">직급목록</div>
+		            <div class="descript">직급을 목록으로 표시합니다.</div>
+		            
+		            <div class="tbl-search">
+		            	<table>
+		                    <colgroup>
+		                        <col style="width:25%" />
+		                        <col style="" />
+		                    </colgroup>
+		                    <tbody>
+		                    	<tr>
+		                    		<th>검색어</th>
+		                    		<td>
+		                    			<input id="keyword" name="keyword" type="text" autocomplete="off" th:value="${search.keyword}"/>
+		                    		</td>
+		                    	</tr>
+		                    </tbody>
+	    				</table>
+		            </div>
+		            
+		            <div class="btn-bottom-btn">
+		                <button type="submit">검색</button>
+		            </div>
+		            
+		            <!-- 리스트 영역 -->
+	    			<div class="tbl-list">
+	    				<div>
+	    					<b class="a">
+	    					총
+	    					<span name="totCnt" th:text="|${pgn.total} 건|"></span>
+	    					</b>
+	    					<select id="cntPerPg" name="cntPerPg">
+	    						<th:block th:if="${pgn.cntPerPg == 10}">
+	    							<option selected="selected" value="10">10</option>
+	    						</th:block>
+	    						<th:block th:if="${pgn.cntPerPg != 10}">
+	    							<option value="10">10</option>
+	    						</th:block>
+	    						<th:block th:if="${pgn.cntPerPg == 20}">
+	    							<option selected="selected" value="20">20</option>
+	    						</th:block>
+	    						<th:block th:if="${pgn.cntPerPg != 20}">
+	    							<option value="20">20</option>
+	    						</th:block>
+	    						<th:block th:if="${pgn.cntPerPg == 30}">
+	    							<option selected="selected" value="30">30</option>
+	    						</th:block>
+	    						<th:block th:if="${pgn.cntPerPg != 30}">
+	    							<option value="30">30</option>
+	    						</th:block>
+	    						<th:block th:if="${pgn.cntPerPg == 50}">
+	    							<option selected="selected" value="50">50</option>
+	    						</th:block>
+	    						<th:block th:if="${pgn.cntPerPg != 50}">
+	    							<option value="50">50</option>
+	    						</th:block>
+	    						<th:block th:if="${pgn.cntPerPg == 100}">
+	    							<option selected="selected" value="100">100</option>
+	    						</th:block>
+	    						<th:block th:if="${pgn.cntPerPg != 100}">
+	    							<option value="100">100</option>
+	    						</th:block>
+		    				</select>
+	    				</div>
+	    				
+	    				<div class="btn-a">
+		                    <a>엑셀 다운로드</a>
+		                </div>
+	    				
+	    				<table>
+	    					<colgroup>
+	    						<col style="width:10%">
+	    						<col style="width:60%">
+	    						<col style="">
+	    					</colgroup>
+	    					<thead>
+	    						<tr>
+	    							<th>번호</th>
+	    							<th>직급명</th>
+	    							<th:block th:if="${session.authNo == 1}">
+	    							<th>관리</th>	    							
+	    							</th:block>
+	    						</tr>
+	    					</thead>
+	    					<th:block th:if="${!#lists.isEmpty(rnkList)}">
+		    					<tbody>
+		    						<tr th:each="item , i: ${rnkList}" th:value="${item.rnkNo}"> <!--  onclick="detail(this);" -->
+										<td th:text="${item.rownum}"></td>
+										<td>
+											<span th:text="${item.rnkNm}"></span>
+										</td>
+										<th:block th:if="${session.authNo == 1}">
+										<td class='btn-bottom-btn-inline'>
+											<button type='button' th:value="${item.rnkNo}" th:name="${item.rnkNm}" onclick="onEdit(this);">수정</button>
+											<button type='button' th:value="${item.rnkNo}" th:name="${item.rnkNm}" onclick="onDelete(this);">삭제</button>
+										</td>
+										</th:block>
+									</tr>
+		    					</tbody>
+	    					</th:block>
+	    					<th:block th:if="${#lists.isEmpty(rnkList)}">
+		    					<tbody>
+		    						<tr>
+										<td colspan="3">데이터가 존재하지 않습니다.</td>
+									</tr>
+		    					</tbody>
+	    					</th:block>
+	    				</table>
+	    				<br>
+	    				<!-- 페이징 영역 -->
+	                	<div class="pgn">
+		                	<th:block th:if="${pgn}">
+		                		
+		                		<th:block th:if="${pgn.startPg != 1}">
+		                			<span id="prevPg"><a>&lt;</a></span>
+		                		</th:block>
+		                		
+		                		<th:block th:each="i : ${pgn.pageList}">
+			                		<th:block th:if="${i == pgn.nowPg}">
+										<span id="targetPg" th:value="${i}"><b th:text="${i}"></b></span>
+									</th:block>
+									
+									<th:block th:if="${i != pgn.nowPg}">
+										<span class="selectPg" th:value="${i}"><a th:text="${i}"></a></span>
+									</th:block>
+		                		</th:block>
+		                		
+		                		<th:block th:if="${pgn.endPg != pgn.lastPg}">
+								<span id="nextPg"><a>&gt;</a></span>
+							</th:block>		
+		                		
+		                	</th:block>
+	                	</div>
+	    			</div>
+	    		</div>
+	        </form>
+	        
+		</div>
+	</div>
+    <div id="footer" class="footer">
+		<div class="wrap">
+			Copyright ⓒ MMP All Rights Reserved.
+		</div>
+	</div>
+	
+</body>
+
+<script>
+function onEdit(param){
+	var inputDept = '';
+	if(inputDept = prompt('선택하신 직급은 '+'"'+ $(param).attr('name') +'"'+'입니다. \n 변경하실 직급명을 입력해주세요.' )){
+		debugger;
+		if(inputDept == '' || inputDept == null){
+			alert('공백은 입력하실 수 없습니다.');
+			return false;
+		}
+		
+		var formData = {
+				inputDept : inputDept,
+				rnkNo : $(param).val()
+		};
+		
+		$.ajax({
+    		type:'post',
+    		contentType:'application/json',
+    		url:'/rnk/edit',
+    		data:JSON.stringify(formData),
+    		success:function(data){
+    			debugger;
+    			if(data.code=="success"){
+    				alert("수정되었습니다.");
+    				location.href=data.url;
+    			}
+    			else{
+    				alert(data.msg);
+    				return false;
+    			}
+    		},
+    		error:function(error){
+    			
+    		}
+    	});
+	}
+}
+
+function onDelete(param){ debugger;
+	if(!confirm("삭제하시겠습니까?")){
+		return false;
+	}
+	var param = {
+		rnkNo : $(param).val()
+	};	
+	$.ajax({
+		type:'post',
+		contentType:'application/json',
+		url:'/rnk/delete',
+		data:JSON.stringify(param),
+		success:function(data){
+			debugger;
+			if(data.code=="success"){
+				alert("삭제되었습니다");
+				location.href=data.url;
+			}
+			else{
+				alert(data.msg);
+				return false;
+			}
+		},
+		error:function(error){
+			
+		}
+	});
+}
+
+/** 페이징 클릭 이벤트 */
+$("#prevPg").click(function(e){
+	$("#nowPg").val(parseInt(parseInt($("#startPg").val()-1)));
+	$("#listForm").submit();
+});
+
+$(".selectPg").click(function(e){ debugger;
+	$("#nowPg").val(parseInt($(e.target).text()));
+	$("#listForm").submit();
+});
+
+$("#nextPg").click(function(e){
+	$("#nowPg").val(parseInt(parseInt($("#endPg").val()) + 1));
+	$("#listForm").submit();
+});
+
+$("#cntPerPg").on('change', function(e){ 
+	$("#nowPg").val(parseInt(1));
+	$("#listForm").submit();
+});
+</script>
+
+</html>

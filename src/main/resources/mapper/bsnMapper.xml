@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.mmp.groupware.domain.business.bsn.bsnMapper">
+
+<select id="getBsnCnt" parameterType="hashmap" resultType="int">
+	select 
+		count(*)
+	from
+		bsn
+	where
+		1=1
+	and 
+		delete_dt is null
+	<if test="keyword != null or keyword.equals('') ">
+	and
+		bsn_tit like CONCAT('%',#{keyword},'%')
+	</if>
+</select>
+
+
+<select id="getBsnList" parameterType="hashmap" resultType="com.mmp.groupware.web.business.dto.bsnDto">
+	select 
+		row_number() over() as rownum,
+		bs.bsn_no as bsnNo,
+		bs.bsn_tit as bsnTit,
+		bs.bsn_cont as bsnCont,
+		bs.bsn_wrt_dt as bsnWrtDt,
+		bs.bsn_start_dt as bsnStartDt,
+		bs.bsn_end_dt as bsnEndDt,
+		bs.bsn_stf_no as bsnStfNo,
+		DATE_FORMAT(bs.create_dt, '%Y-%m-%d') as createDt,
+		DATE_FORMAT(bs.update_dt, '%Y-%m-%d') as updateDt,
+		DATE_FORMAT(bs.delete_dt, '%Y-%m-%d') as deleteDt,
+		stf.stf_nm as bsnWrtNm
+	from
+		bsn bs
+	left join
+		staff stf
+	on
+		bs.bsn_stf_no = stf.stf_no
+	where
+		bs.delete_dt is null
+	<if test="keyword != null or keyword.equals('') ">
+	and
+		bs.bsn_tit like CONCAT('%',#{keyword},'%')
+	</if>
+	order by rownum desc
+	<if test="start != null and end != null">
+	limit #{start} , #{end}
+	</if>
+
+</select>
+
+<select id="getBsnDetail" parameterType="long" 
+	resultType="com.mmp.groupware.web.business.dto.bsnDto">
+select 
+	bs.bsn_no as bsnNo,
+	bs.bsn_tit as bsnTit,
+	bs.bsn_cont as bsnCont,
+	bs.bsn_wrt_dt as bsnWrtDt,
+	bs.bsn_start_dt as bsnStartDt,
+	bs.bsn_end_dt as bsnEndDt,
+	bs.bsn_stf_no as bsnStfNo,
+	DATE_FORMAT(bs.create_dt, '%Y-%m-%d') as createDt,
+	DATE_FORMAT(bs.update_dt, '%Y-%m-%d') as updateDt,
+	DATE_FORMAT(bs.delete_dt, '%Y-%m-%d') as deleteDt,
+	stf.stf_nm as bsnWrtNm
+from
+	bsn bs
+left join
+	staff stf
+on
+	bs.bsn_stf_no = stf.stf_no
+where
+	bs.delete_dt is null
+and
+	bs.bsn_no = #{bsnNo}
+</select>
+
+
+</mapper>

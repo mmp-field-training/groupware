@@ -1,0 +1,1054 @@
+﻿/* 
+  erd html
+*/
+html {
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    min-height: 820px;
+    margin: 0;
+    font-size: 13px;
+    -webkit-print-color-adjust: exact;
+    cursor: default;
+    font-family: nanum gothic;
+}
+
+/* components */
+tr {
+    transition: 0.1s ease-in-out;
+}
+
+    tr:hover {
+        background: #f9f9f9;
+        transition: 0s;
+    }
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: 0.1s ease-in-out;
+}
+
+    a:hover {
+        text-decoration: underline;
+        transition: 0s !important;
+    }
+
+    a:active {
+        opacity: 0.5;
+    }
+
+input {
+    height: 30px !important;
+    border: 1px solid #cbcbcb;
+    vertical-align: top;
+    padding-left: 10px;
+    color: #666;
+}
+
+    input[type=button] {
+        height: 30px !important;
+        padding: 0px 13px !important;
+        background: #fafafa;
+        color: #8f3333;
+        font-weight: bold;
+        border: 1px solid #cbcbcb;
+        border-radius: 0;
+        display: inline-block;
+        transition: 0.1s ease-in-out;
+        cursor: pointer;
+    }
+
+        input[type=button]:hover {
+            background: #9155e5;
+            color: #fff;
+            border: 1px solid #7f4ac8;
+            text-decoration: none;
+            transition: 0s !important;
+        }
+
+        input[type=button]:active {
+            opacity: 0.5;
+        }
+
+    input[type=file] {
+        height: 34px !important;
+        padding: 3px 0 3px 3px !important;
+        background: #fafafa;
+        color: #8f3333;
+        border: 1px solid #cbcbcb;
+        border-radius: 0;
+        display: inline-block;
+        transition: 0.1s ease-in-out;
+        cursor: pointer;
+    }
+
+        input[type=file]:hover {
+            background: #9155e5;
+            color: #fff;
+            border: 1px solid #7f4ac8;
+            text-decoration: none;
+        }
+
+        input[type=file]:active {
+            opacity: 0.5;
+            transition: 0s ease-in-out;
+        }
+
+    input[type=radio] {
+        vertical-align: middle;
+    }
+
+    input[type=date] {
+        width: 120px;
+    }
+
+td.ip_max input {
+    width: 90%;
+}
+
+textarea {
+    border: 1px solid #cdcdcd;
+    color: #666;
+}
+
+select {
+    height: 30px;
+    border: 1px solid #cbcbcb;
+    color: #666;
+}
+
+.sel_vert select {
+    vertical-align: middle;
+}
+
+/* wrap */
+.wrap {
+    width: 1150px;
+    min-width: 1150px;
+}
+
+
+/*content*/
+.content {
+    width: 100%;
+    display: table;
+    background: #f2f4f7;
+}
+
+    .content .wrap {
+        margin: 0 auto;
+    }
+
+    .content .left {
+        margin: 10px 0;
+        width: 150px;
+        float: left;
+    }
+
+        .content .left .menu {
+            margin: 10px 0;
+        }
+
+            .content .left .menu a {
+                width: 100%;
+                display: block;
+                padding: 9px 0 9px 10px;
+            }
+
+                .content .left .menu a:hover {
+                    background: rgba(0,0,0,0.05);
+                    text-decoration: none;
+                }
+
+                .content .left .menu a:active {
+                    opacity: 0.5;
+                }
+
+                .content .left .menu a.cld {
+                    padding-left: 22px;
+                }
+
+                .content .left .menu a.on {
+                    background: rgba(0,0,0,0.05);
+                    text-decoration: none;
+                    color: #000;
+                }
+
+            .content .left .menu .menuimg img {
+                width: 80%;
+                background-color: #005699;
+                background-blend-mode: screen;
+            }
+
+            .content .left .menu h3 {
+                padding: 17px 0;
+                margin: 0 17px 17px 0px;
+                border-bottom: 1px solid #dedede;
+                font-size: 12px;
+                color: #333;
+                font-weight: bold;
+            }
+
+
+    .content .right {
+        width: 988px;
+        min-height: 695px;
+        margin: 0 0 0 10px;
+        background: #fff;
+        border-right: 1px solid #dee3eb;
+        border-left: 1px solid #dee3eb;
+        float: right
+    }
+
+        .content .right .title {
+            padding: 30px 25px;
+            font-family: nanum gothic;
+            font-size: 22px;
+        }
+
+        .content .right .descript {
+            margin: -20px 0 30px 25px;
+            font-family: nanum gothic;
+            line-height: 180%;
+        }
+
+        .content .right .contents {
+        }
+
+
+/* 검색 테이블 */
+.tbl-search {
+    padding: 0 25px;
+}
+
+    .tbl-search table {
+        margin: 0 auto;
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+    }
+
+        .tbl-search table th, .tbl-search table td {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tbl-search table th {
+            padding: 0 0 0 20px;
+            text-align: left;
+            background: #f2f4f7;
+            font-weight: normal;
+        }
+
+        .tbl-search table td {
+            padding: 7px 0 7px 20px;
+        }
+
+    .tbl-search input[type=checkbox] {
+        vertical-align: middle;
+    }
+
+/* 목록 테이블 */
+.tbl-list tbody tr {
+    cursor: pointer;
+}
+
+.tbl-list {
+    padding: 20px 25px;
+}
+
+    .tbl-list div:nth-child(1) {
+        float: left;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+        .tbl-list div:nth-child(1) b.u {
+            color: #f26522;
+        }
+
+        .tbl-list div:nth-child(1) b.a {
+            color: #005699;
+        }
+
+    .tbl-list div:nth-child(2) {
+        float: right;
+    }
+
+        .tbl-list div:nth-child(2).Lrtxt {
+            padding-top: 20px;
+        }
+
+        .tbl-list div:nth-child(2) b.u {
+            color: #f26522;
+        }
+
+        .tbl-list div:nth-child(2) b.a {
+            color: #005699;
+        }
+
+        .tbl-list div:nth-child(2) a {
+            margin-bottom: 10px;
+        }
+
+    .tbl-list div:nth-child(4) {
+        float: right;
+        margin-top: 10px;
+    }
+
+    .tbl-list table {
+        margin: 0 auto;
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+    }
+
+        .tbl-list table th, .tbl-list table td {
+            text-align: center;
+        }
+
+        .tbl-list table th {
+            padding: 14px 0;
+            background: #f2f4f7;
+            border-top: 2px solid #005699;
+            border-bottom: 1px solid #ddd;
+        }
+
+    .tbl-list.user table th {
+        padding: 14px 0;
+        background: #f2f4f7;
+        border-top: 2px solid #f26522;
+    }
+
+    .tbl-list table td {
+        padding: 7px 0;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+        .tbl-list table td.tit {
+            padding-left: 20px;
+            text-align: left;
+        }
+
+    .tbl-list .num {
+        font-family: Tahoma;
+        font-size: 11px;
+        color: #999;
+    }
+
+    .tbl-list table input[type=checkbox] {
+        height: 13px !important;
+    }
+
+    .tbl-list .b {
+        font-weight: bold;
+    }
+
+    .tbl-list .big {
+        font-size: 16px;
+        font-family: tahoma;
+    }
+
+    .tbl-list .icon img {
+        width: 10px;
+    }
+
+    .tbl-list .icon a {
+        background: #005699;
+        border: 1px solid #005699;
+        padding: 10px;
+    }
+
+    .tbl-list tfoot td {
+        background: #f2f4f7;
+        font-weight: bold;
+    }
+
+/*버튼*/
+.btn-u a {
+    padding: 10px 20px;
+    background: #f2f4f7;
+    border: 1px solid #cbcbcb;
+    display: inline-block;
+    font-weight: bold;
+}
+
+    .btn-u a:hover {
+        background: #f26522;
+        border: 1px solid #f26522;
+        color: #fff;
+        text-decoration: none;
+    }
+
+.btn-a a {
+    padding: 10px 20px;
+    background: #f2f4f7;
+    border: 1px solid #cbcbcb;
+    display: inline-block;
+    font-weight: bold;
+}
+
+    .btn-a a:hover {
+        background: #005699;
+        border: 1px solid #005699;
+        color: #fff;
+        text-decoration: none;
+    }
+
+.btn-u button {
+    padding: 10px 20px;
+    background: #f2f4f7;
+    border: 1px solid #cbcbcb;
+    display: inline-block;
+    font-weight: bold;
+}
+
+    .btn-u button:hover {
+        background: #f26522;
+        border: 1px solid #f26522;
+        color: #fff;
+        text-decoration: none;
+    }
+
+.btn-a button {
+    padding: 10px 20px;
+    background: #f2f4f7;
+    border: 1px solid #cbcbcb;
+    display: inline-block;
+    font-weight: bold;
+}
+
+    .btn-a button:hover {
+        background: #005699;
+        border: 1px solid #005699;
+        color: #fff;
+        text-decoration: none;
+    }
+
+.btn-a select {
+    height: 36px;
+    display: inline;
+    vertical-align: top;
+}
+
+    .btn-a select.work {
+        vertical-align: middle;
+    }
+
+.btn-small-a a {
+    padding: 5px 10px;
+    background: #f2f4f7;
+    border: 1px solid #cbcbcb;
+    display: inline-block;
+}
+
+    .btn-small-a a:hover {
+        background: #005699;
+        border: 1px solid #005699;
+        color: #fff;
+        text-decoration: none;
+    }
+
+.btn-small-a button {
+    padding: 5px 10px;
+    background: #f2f4f7;
+    border: 1px solid #cbcbcb;
+    display: inline-block;
+    cursor: pointer;
+}
+
+    .btn-small-a button:hover {
+        background: #005699;
+        border: 1px solid #005699;
+        color: #fff;
+        text-decoration: none;
+    }
+
+.btn-input-a a {
+    padding: 7px 14px;
+    background: #f2f4f7;
+    border: 1px solid #cbcbcb;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+    .btn-input-a a:hover {
+        background: #005699;
+        border: 1px solid #005699;
+        color: #fff;
+        text-decoration: none;
+    }
+
+.btn-input-a-blue a {
+    padding: 7px 14px;
+    background: #005699;
+    color: #fff;
+    border: 1px solid #005699;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+    .btn-input-a-blue a:hover {
+        text-decoration: none;
+        opacity: 0.8;
+    }
+
+    .btn-input-a-blue a:active {
+        opacity: 0.4;
+    }
+
+.btn-bottom-u {
+    text-align: center;
+    margin: 20px 0 30px 0;
+}
+
+    .btn-bottom-u a {
+        padding: 10px 20px;
+        background: #f2f4f7;
+        border: 1px solid #cbcbcb;
+        display: inline-block;
+        font-weight: bold;
+    }
+
+        .btn-bottom-u a:hover {
+            background: #f26522;
+            border: 1px solid #f26522;
+            color: #fff;
+            text-decoration: none;
+        }
+
+.btn-bottom-btn {
+    text-align: center;
+    margin: 20px 0 30px 0;
+}
+
+    .btn-bottom-btn a,
+    .btn-bottom-btn button {
+        padding: 10px 20px;
+        background: #f2f4f7;
+        border: 1px solid #cbcbcb;
+        display: inline-block;
+        font-weight: bold;
+        cursor: pointer
+    }
+
+        .btn-bottom-btn a:hover,
+        .btn-bottom-btn button:hover {
+            background: #005699;
+            border: 1px solid #005699;
+            color: #fff;
+            text-decoration: none;
+        }
+
+
+/*tbl-info*/
+.tbl-info {
+    padding: 0 25px;
+}
+
+    .tbl-info .stit {
+        padding: 30px 0 10px 0;
+        font-size: 14px;
+        font-family: nanum gothic;
+        font-weight: bold;
+    }
+
+        .tbl-info .stit .stit_des {
+            float: right;
+            display: inline;
+            font-family: dotum;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+    .tbl-info table {
+        margin: 0 auto;
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+    }
+
+        .tbl-info table th, .tbl-info table td {
+            padding: 7px 0 7px 20px;
+        }
+
+        .tbl-info table th {
+            text-align: left;
+            background: #f2f4f7;
+            font-weight: normal;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tbl-info table td {
+            line-height: 160%;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .tbl-info table td img {
+                border-radius: 3px;
+            }
+
+            .tbl-info table td input {
+                vertical-align: middle;
+            }
+
+            .tbl-info table td.cash input {
+                text-align: right;
+                padding-right: 5px;
+                font-weight: bold;
+                font-family: Tahoma;
+            }
+
+    .tbl-info .phone {
+    }
+
+        .tbl-info .phone input {
+            width: 50px;
+        }
+
+    .tbl-info .add {
+        padding: 7px 0 0 20px;
+    }
+
+        .tbl-info .add input {
+            margin: 0px 0 7px 0;
+        }
+    /*.tbl-info .photo div {width:250px; margin-bottom:5px;} 211018 김영철: 직원상세보기 프로필사진부분 잠깐 지움...*/
+    .tbl-info .photo div img {
+        max-width: 250px;
+        display: block;
+    }
+
+    .tbl-info .area {
+    }
+
+        .tbl-info .area textarea {
+            width: 95%;
+            height: 90px;
+        }
+
+    .tbl-info a {
+        padding: 6px 10px 5px 10px !important;
+        background: #fafafa;
+        color: #8f3333;
+        font-weight: bold;
+        border: 1px solid #cbcbcb;
+        border-radius: 0;
+        display: inline-block;
+        transition: 0.1s ease-in-out;
+        cursor: pointer;
+    }
+
+        .tbl-info a:hover {
+            padding: 6px 10px;
+            background: #9155e5;
+            color: #fff;
+            border: 1px solid #7f4ac8;
+            text-decoration: none;
+        }
+
+        .tbl-info a:active {
+            opacity: 0.5;
+            transition: 0s ease-in-out;
+        }
+
+    .tbl-info .user a:hover {
+        background: #f26552;
+        border: #f26552;
+    }
+
+    .tbl-info .admin a:hover {
+        background: #005699;
+        border: #005699;
+    }
+
+    .tbl-info .user input[type=button]:hover {
+        background: #f26552;
+        border: #f26552;
+    }
+
+    .tbl-info .admin input[type=button]:hover {
+        background: #005699;
+        border: #005699;
+    }
+
+    .tbl-info .admin input[type=file]:hover {
+        background: #005699;
+        border: #005699;
+    }
+
+    .tbl-info input[type=file]:hover {
+        background: #f26552;
+        color: #fff;
+        border: 1px solid #f26552;
+    }
+
+    .tbl-info .w input[type=text] {
+        width: 95%;
+    }
+
+    .tbl-info .w textarea {
+        width: 95%;
+        height: 500px;
+        line-height: 140%;
+    }
+    /*sign&contract*/
+    .tbl-info .cont {
+    }
+
+        .tbl-info .cont .contbox {
+            border: 1px solid #ddd;
+            background: #fff;
+            width: 90%;
+            padding: 20px;
+        }
+
+            .tbl-info .cont .contbox .tit {
+                font-size: 22px;
+                font-weight: bold;
+                text-align: center;
+                margin: 40px 0;
+            }
+
+    .tbl-info .sign {
+    }
+
+        .tbl-info .sign .signbox {
+            border: 1px solid #ddd;
+            background: #fff;
+            width: 90%;
+            padding: 20px;
+            margin-bottom: 10px;
+        }
+
+            .tbl-info .sign .signbox .date {
+                text-align: center;
+                margin-bottom: 20px
+            }
+
+            .tbl-info .sign .signbox .company {
+            }
+
+                .tbl-info .sign .signbox .company div:nth-child(1) {
+                    font-weight: bold;
+                }
+
+                .tbl-info .sign .signbox .company div:nth-child(4) {
+                }
+
+            .tbl-info .sign .signbox .worker {
+                margin-top: 20px;
+            }
+
+                .tbl-info .sign .signbox .worker div:nth-child(1) {
+                    font-weight: bold;
+                }
+
+                .tbl-info .sign .signbox .worker div:nth-child(5) {
+                }
+
+            .tbl-info .sign .signbox .doc {
+                margin-top: 20px;
+            }
+
+                .tbl-info .sign .signbox .doc div:nth-child(1) {
+                    font-weight: bold;
+                }
+
+            .tbl-info .sign .signbox .here {
+                display: inline-block;
+                position: relative;
+                margin-left: 200px;
+                text-align: right;
+            }
+
+                .tbl-info .sign .signbox .here a {
+                    margin-left: 170px;
+                }
+
+            .tbl-info .sign .signbox .loadimg {
+                position: absolute;
+                left: 50px;
+                bottom: 0;
+                border-bottom: 1px solid #000;
+                width: 160px;
+                text-align: left;
+            }
+
+                .tbl-info .sign .signbox .loadimg img {
+                    width: 160px !important;
+                    height: 50px !important;
+                }
+
+    .tbl-info textarea.contbox {
+        font-family: gulim;
+        line-height: 1.6;
+    }
+
+    .tbl-info input {
+        
+    }
+
+    .tbl-info .img-container {
+        width: 100%;
+        height: 400px;
+    }
+
+        .tbl-info .img-container .one-image {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .tbl-info .img-container .two-image:nth-child(1) {
+            position: relative;
+            width: 48%;
+            height: 100%;
+            float: left;
+        }
+
+        .tbl-info .img-container .two-image:nth-child(2) {
+            position: relative;
+            width: 49%;
+            height: 100%;
+            float: right;
+        }
+
+        .tbl-info .img-container .big-image {
+            position: relative;
+            width: 49%;
+            height: 100%;
+            float: left;
+        }
+
+        .tbl-info .img-container .small-image {
+            width: 24%;
+            height: 49%;
+            float: left;
+            margin: 0px 0px 5px 5px;
+        }
+
+            .tbl-info .img-container .small-image:nth-child(2n) {
+                width: 24%;
+                height: 49%;
+                float: left;
+                margin: 0px 7px 5px 13px;
+            }
+
+
+/* 페이징 */  
+.pgn{
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	height: 25px;
+	line-height: 0.5;
+}
+    
+.pgn span{
+	border: 1px solid #005699;
+	padding: 8px;
+}    
+    
+#targetPg {
+	color:white;
+	background:#005699;
+}
+
+/* table Empty Data */
+.table-nodata {
+	position: unset !important;
+	left: unset !important;
+	top: unset !important;
+	width: unset !important;
+	height: unset !important;
+	z-index: unset !important;
+	color: unset !important;
+	font-size: unset !important;
+}
+
+.background {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.3);
+	z-index: 1000;
+	
+	/* 숨기기 */
+	z-index: -1;
+	opacity: 0;
+}
+
+.show {
+	opacity: 1;
+	z-index: 1000;
+	transition: all 0.5s;
+}
+
+.window {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.popup {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #ffffff;
+	box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+	/* 임시 지정 */
+  	width: 500px;
+	height: 500px;
+	
+	/* 초기에 약간 아래에 배치 */
+	transform: translate(-50%, -40%);
+}
+
+.popup .pop-header {
+	display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid lightgrey;
+}
+
+.popup .pop-header h4 {
+	margin: 10px 0px 10px 10px;
+}
+
+.popup .pop-header #close{
+	width: 25px;
+    height: 25px;
+    margin: 6px;
+    border: none;
+    background: white;
+    font-size: 20px;
+}
+
+.popup .pop-content .search-div{
+	padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid lightgrey;
+}
+
+.popup .pop-content .search-div #keyword{
+	width: 400px;
+}
+
+.popup .pop-content .search-div #search{
+	width: 70px;
+}   
+
+.popup .pop-content .list-div{
+    width: 100%;
+    height: 350px;
+    overflow-y: scroll;
+    border-bottom: 1px solid lightgrey;
+}
+
+.popup .pop-content table{
+    width: 100%;
+    text-align: center;
+}
+
+.popup .pop-buttons{
+    text-align: center;
+    margin: 10px 0 0 0;
+}
+
+.popup .pop-buttons button{
+    padding: 10px 20px;
+    background: #f2f4f7;
+    border: 1px solid #cbcbcb;
+    display: inline-block;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+.show .popup {
+   transform: translate(-50%, -50%);
+   transition: all 0.5s;
+}
+
+.comment-area{
+    min-height: 100px;
+    margin-top: 20px;
+    border: 1px solid lightgrey;
+    background: rgb(250,250,260);
+}
+
+.comment-area ul {
+	padding: 10px;
+}
+
+.comment-area ul li{
+    display: flex;
+    justify-content: flex-start;
+    margin:10px 0px 10px 0px;
+}
+
+.comment-area ul li div:nth-child(1){
+	font-weight:bold;
+	width:50px;
+}
+
+.comment-area ul li div:nth-child(2){
+	margin-right: 5px;
+    max-width: 860px;
+}
+
+.comment-area ul li div:nth-child(2) span:nth-child(2){
+    margin-left: 5px;
+    font-size: 11px;
+    color: blue;
+}
+
+.comment-add-area {
+    min-height: 70px;
+    margin-top: 10px;
+    border: 1px solid lightgrey;
+    background: rgb(250,250,260);
+    padding:10px;
+}
+
+.comment-add-area div{
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.comment-add-area div textarea{
+    min-width: 800px;
+    height: 94px;
+    max-width: 800px;
+    min-height: 100px;
+    width: 794px;
+}
+
+.comment-add-area div button{
+	width: 110px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

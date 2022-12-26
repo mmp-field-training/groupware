@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.mmp.groupware.domain.business.bsnComm.bsnCommMapper">
+
+<select id="getBsnCommList" parameterType="long" resultType="com.mmp.groupware.web.business.dto.bsnCommDto">
+select
+	bc.bsn_comm_no as bsnCommNo,
+	bc.bsn_no as bsnNo,
+	bc.bsn_comm_wrt_stf_no as bsnCommWrtStfNo,
+	DATE_FORMAT(bc.bsn_comm_wrt_dt, '%Y-%m-%d') as bsnCommWrtDt,
+	bc.bsn_comm_cont as bsnCommCont,
+	bc.create_dt as createDt,
+	bc.update_dt as updateDt,
+	bc.delete_dt as deleteDt,
+	stf.stf_nm as bsnCommWrtStfNm
+from
+	bsn_comm bc
+left join
+	staff stf
+on
+	bc.bsn_comm_wrt_stf_no = stf.stf_no
+where
+	bc.delete_dt is null
+and
+	bc.bsn_no = #{bsnNo}
+order by
+	bc.create_dt asc
+</select>
+
+</mapper>

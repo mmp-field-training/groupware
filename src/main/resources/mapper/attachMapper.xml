@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.mmp.groupware.domain.attachment.attachMapper">
+
+<select id="getBsnFiles" parameterType="long" resultType="com.mmp.groupware.web.business.dto.bsnFilesDto">
+select 
+	bsf.bsn_files_no as bsnFilesNo,
+	bsf.atc_no as atcNo,
+	bsf.bsn_no as bsnNo,
+	atc.atc_ori_nm as atcOriNm,
+	atc.atc_up_nm as atcUpNm
+from
+	bsn_files as bsf
+left join
+	attachment as atc
+on	
+	bsf.atc_no = atc.atc_no
+where
+	bsf.bsn_no = #{bsnNo}
+</select>
+
+</mapper>

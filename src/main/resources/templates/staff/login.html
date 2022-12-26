@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+    <th:block th:replace="~{fragment/header.html :: fragment-header}"></th:block>
+    <link rel="stylesheet" href="/css/login.css"/>
+	<title>title</title>
+</head>
+
+<body>
+<form method="post" id="loginForm">
+	<div class="wrap">
+		<div>
+			<img class="logoimg" src="/imgs/logo/logo_gr-slo(mark_w).png"/>
+            <h2 class="logotxt">GROUPWARE</h2>
+		</div>
+		<div>
+            <input type="text" id="stfId" name="stfId" placeholder="아이디" autocomplete="off" required />
+            <input type="password" id="stfPwd" name="stfPwd" placeholder="비밀번호" autocomplete="off" required/>
+            <button class="login">로그인</button>
+        </div>
+	</div>
+</form>
+</body>
+
+<script>
+$('#loginForm').on('submit', async function(e){
+	
+	e.preventDefault(); 
+	
+	var form = $(this).closest("#loginForm");
+	var formData = form.serializeObject();
+	
+	$.ajax({
+		type : 'POST',
+		url : '/staff/login',
+		contentType : "application/json",
+		data : JSON.stringify(formData),
+	 	success : function(data){ debugger;
+	 		if(data.code==='success'){
+	 			alert("환영합니다.");
+	 			location.href="/staff/list";
+	 		}
+	 		else{
+	 			alert(data.message);
+	 			// 에러필드 매칭해주기 및 이전 입력 값 다시 넣어주기
+	 			return false;
+	 		}
+		},
+		error : function(error){
+		}
+	});
+	
+});
+</script>
+
+</html>

@@ -1,0 +1,74 @@
+<th:block th:fragment="fragment-navbar">
+	<div id="header" class="header">
+		<div class="header-top">
+			<a>MMP</a>
+			<b><span th:text="|${session.deptNm} ${session.stfNm} ${session.rnkNm} 님 [${session.authNm}]|"></span></b>
+			<a id="logout">로그아웃</a>
+        </div>
+        
+        <!-- hidden value -->
+		<input type='hidden' id='sessionUserNo' th:value='${session.stfNo}'>
+		<input type='hidden' id='menu' th:value='${menu}'>
+	
+		<div class="header-wrap">
+	        <div class='logo'>
+			    <a style="color: white; font-size: 30px; font-weight: bold; line-height: 2;" th:href="@{/staff/list}">
+			        <!-- <img src='/imgs/logo/logo_gr-slo(mark_w).png' >
+			       <img src='/imgs/logo/logo_gr-slo(type_w).png' > -->
+			       GROUPWARE
+			    </a>
+	        </div>
+	        <div class="menu">
+	        	<a id="staffMenu" th:href="@{/staff/list}" name='menu'>
+	            	<img src="/imgs/logo/topic_thum_01.png" />
+	            직원관리
+	            </a>
+	        	<!-- <a id="deptMenu" th:href="@{/dept/list}" name='menu'>
+	            	<img src="/imgs/logo/topic_thum_01.png" />
+	            부서관리
+	            </a>
+	        	<a id="Menu" th:href="@{/job/list}" name='menu'>
+	            	<img src="/imgs/logo/topic_thum_01.png" />
+	            직급관리
+	            </a> -->
+	        	<a id="bsnMenu" th:href="@{/bsn/list}" name='menu'>
+	            	<img src="/imgs/logo/topic_thum_01.png" />
+	            업무일지
+	            </a>
+	        </div>
+	    </div>
+	</div>
+	
+	<script th:inline="javascript">
+	$(document).ready(function(e){	
+		/*<![CDATA[*/
+		var menu = /*[[${menu}]]*/ "";
+		/*]]>*/	
+		$('.menu > a[name=menu]').removeClass('on');
+		$("#"+menu+"Menu").addClass('on');
+	});
+	
+	$('#logout').click(function(){
+		if(confirm("로그아웃 하시겠습니까?")){
+			location.href = "/staff/logout";
+		}
+	})
+	</script>
+</th:block>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

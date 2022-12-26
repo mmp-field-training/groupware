@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.mmp.groupware.domain.business.bsnRefer.bsnReferMapper">
+
+<select id="getBsnReferList" parameterType="long" resultType="com.mmp.groupware.web.business.dto.bsnReferDto">
+ select
+	br.bsn_ref_no as bsnRefNo,
+	br.bsn_no as bsnNo,
+	br.bsn_ref_stf_no as bsnRefStfNo,
+	stf.stf_nm as bsnRefStfNm
+from
+	bsn_refer br
+left join 
+	staff stf
+on
+	br.bsn_ref_stf_no = stf.stf_no
+where
+	br.delete_dt is null
+and
+	br.bsn_no = #{bsnNo}
+</select>
+
+</mapper>

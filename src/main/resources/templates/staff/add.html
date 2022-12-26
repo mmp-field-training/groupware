@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragment/header.html :: fragment-header}"></th:block>
+	<link rel="stylesheet" href="/css/erdLayout.css"/>
+</head>
+
+<body>
+    <th:block th:replace="~{fragment/navbar.html :: fragment-navbar}"></th:block>
+   
+    <div class="content">
+   		<div class="wrap">
+			<div class="left">
+	            <div class="menu">
+	                <h3>직원관리</h3>
+	                <a th:href="@{/staff/list}">직원목록</a>
+	                <a th:href="@{/dept/list}">부서목록</a>
+	                <a th:href="@{/rnk/list}">직급목록</a>
+	                <th:block th:if="${session.authNo == 1}">
+	                <a class="on" th:href="@{/staff/add}">직원등록</a>
+	                <a th:href="@{/dept/add}">부서등록</a>
+	                <a th:href="@{/rnk/add}">직급등록</a>
+	                </th:block>
+	            </div>
+	        </div>
+	    	
+	    		<div id='content' class='right'>
+		            <!-- 컨텐츠 안내 -->
+		            <div class="title">직원등록</div>
+		            <div class="descript">직원 정보를 등록합니다.</div>
+	    			
+	    			<div class='tbl-info'>
+	    				<div>
+	    					<table>
+	    						<colgroup>
+	    							<col style="width:20%;">
+	    							<col style="">
+	    						</colgroup>
+	    						<tbody>
+	    							<tr>
+	    								<th>권한</th>
+	    								<td>
+	    									<th:block th:if="${!#lists.isEmpty(authList)}">
+		    									<select style="width:292px" id="authNo" name="authNo">
+		    										<th:block th:if="${!#lists.isEmpty(authList)}" th:each="item : ${authList}">
+		    											<option th:value="${item.authNo}" th:text="${item.authNm}"></option>
+		    										</th:block>
+		    									</select>
+	    									</th:block>
+	    								</td>
+	    							</tr>
+	    							<tr>
+	    								<th>부서</th>
+	    								<td>
+	    									<th:block th:if="${!#lists.isEmpty(deptList)}">
+		    									<select style="width:292px" id="deptNo" name="deptNo">
+		    										<th:block th:if="${!#lists.isEmpty(deptList)}" th:each="item : ${deptList}">
+		    											<option th:value="${item.deptNo}" th:text="${item.deptNm}"></option>
+		    										</th:block>
+		    									</select>
+	    									</th:block>
+	    								</td>
+	    							</tr>
+	    							<tr>
+	    								<th>직급</th>
+	    								<td>
+	    									<th:block th:if="${!#lists.isEmpty(rnkList)}">
+		    									<select style="width:292px" id="rnkNo" name="rnkNo">
+		    										<th:block th:if="${!#lists.isEmpty(rnkList)}" th:each="item : ${rnkList}">
+		    											<option th:value="${item.rnkNo}" th:text="${item.rnkNm}"></option>
+		    										</th:block>
+		    									</select>
+	    									</th:block>
+	    								</td>
+	    							</tr>
+	    							<tr>
+	    								<th>아이디</th>
+	    								<td>
+	    									<input type="text" id="stfId" name="stfId" style="width:278px" maxlength="50"/>
+	    								</td>
+	    							</tr>
+	    							<tr>
+	    								<th>비밀번호</th>
+	    								<td>
+	    									<input type="password" id="stfPwd" name="stfPwd" style="width:278px" maxlength="50"/>
+	    								</td>
+	    							</tr>
+	    							<tr>
+	    								<th>비밀번호 확인</th>
+	    								<td>
+	    									<input type="password" id="stfPwdConf" name="stfPwdConf" style="width:278px" maxlength="50"/>
+	    								</td>
+	    							</tr>
+	    							<tr>
+	    								<th>이름</th>
+	    								<td>
+	    									<input type="text" id="stfNm" name="stfNm" style="width:278px" maxlength="50"/>
+	    								</td>
+	    							</tr>
+	    							<tr>
+	    								<th>성별</th>
+	    								<td>
+	    									<label>남성</label>
+	    									<input type="radio" name="stfGender" value="man" checked="checked"/>
+	    									<label>여성</label>
+	    									<input type="radio" name="stfGender" value="woman"/>
+	    								</td>
+	    							</tr>
+	    							<tr>
+	    								<th>이메일</th>
+	    								<td>
+	    									<input type="text" id="stfEmail" name="stfEmail" style="width:278px" maxlength="100"/>
+	    								</td>
+	    							</tr>
+	    							<tr>
+	    								<th>휴대폰번호</th>
+	    								<td>
+	    									<input type="text" id="stfPhone" name="stfPhone" style="width:278px" maxlength="15"/>
+	    								</td>
+	    							</tr>
+	    							<tr>
+	    								<th>생년월일</th>
+	    								<td>
+	    									<input type="date" id="stfBirth" name="stfBirth" style="width:278px"/>
+	    								</td>
+	    							</tr>
+	    							<tr>
+	    								<th>총 연차</th>
+	    								<td>
+	    									<input type="number" id="stfAnnual" name="stfAnnual" style="width:278px" min="0"/>
+	    								</td>
+	    							</tr>
+	    							<tr>
+	    								<th>입사일자</th>
+	    								<td>
+	    									<input type="date" id="stfHiredDt" name="stfHiredDt" style="width:278px"/>
+	    								</td>
+	    							</tr>
+	    						</tbody>
+	    					</table>
+	    				</div>
+	    			<!-- button -->
+	    			<div class="btn-bottom-btn">
+				        <button type="button" id="add">등록</button>
+				        <button type='button'>취소</button>
+				   	</div>
+	    			</div>
+	    		</div>
+    	</div>
+    </div>
+    <div id="footer" class="footer">
+		<div class="wrap">
+			Copyright ⓒ MMP All Rights Reserved.
+		</div>
+	</div>
+</body>
+
+<script>
+
+document.getElementById('add').addEventListener('click',()=>{ debugger;
+	debugger;
+	// 1. 입력값 벨리데이션 체크
+	if($('#authNo').val() == '' || $('#authNo').val() == null){
+		alert('권한을 선택해주세요.');
+		return false;
+	}
+	
+	if($('#deptNo').val() == '' || $('#deptNo').val() == null){
+		alert('부서를 선택해주세요.');
+		return false;
+	}
+	
+	if($('#rnkNo').val() == '' || $('#rnkNo').val() == null){
+		alert('직급을 선택해주세요.');
+		return false;
+	}
+	
+	if($('#stfId').val() == '' || $('#stfId').val() == null){
+		alert('아이디를 입력해주세요.');
+		return false;
+	}
+	
+	if($('#stfPwd').val() == '' || $('#stfPwd').val() == null){
+		alert('비밀번호를 입력해주세요.');
+		return false;
+	}
+	
+	if($('#stfPwdConf').val() == '' || $('#stfPwdConf').val() == null){
+		alert('비밀번호 확인란에 비밀번호를 입력해주세요.');
+		return false;
+	}
+	
+	if($('#stfNm').val() == '' || $('#stfNm').val() == null){
+		alert('이름을 입력해주세요.');
+		return false;
+	}
+	
+	if($('input[name=stfGender]').val() == '' || $('input[name=stfGender]').val() == null){
+		alert('성별을 선택해주세요.');
+		return false;
+	}
+
+	if($('#stfEmail').val() == '' || $('#stfEmail').val() == null){
+		alert('이메일을 입력해주세요.');
+		return false;
+	}
+	
+	if($('#stfPhone').val() == '' || $('#stfPhone').val() == null){
+		alert('휴대폰번호를 정확히 입력해주세요.');
+		return false;
+	}
+	
+	if($('#stfBirth').val() == '' || $('#stfBirth').val() == null){
+		alert('생년월일을 입력해주세요.');
+		return false;
+	}
+	
+	if($('#stfAnnual').val() == '' || $('#stfAnnual').val() == null){
+		alert('부여하실 연차를 입력해주세요.');
+		return false;
+	}
+	
+	if($('#stfHiredDt').val() == '' || $('#stfHiredDt').val() == null){
+		alert('입사일자를 입력해주세요.');
+		return false;
+	}
+
+	if($('#stfPwd').val() != $('#stfPwdConf').val()){
+		alert('비밀번호가 일치하지 않습니다.');
+		return false;
+	}
+	
+	var checkGender=null;
+	for(var i=0; i<$('input[name=stfGender]').length; i++){
+		if($('input[name=stfGender]').eq(i).prop('checked')){
+			checkGender = $('input[name=stfGender]').eq(i).val();
+		}
+	}
+	
+	var formData = {
+			authNo : $('#authNo').val(),
+			deptNo : $('#deptNo').val(),
+			rnkNo : $('#rnkNo').val(),
+			stfId : $('#stfId').val(),
+			stfPwd : $('#stfPwd').val(),
+			stfNm : $('#stfNm').val(),
+			stfGender : checkGender,
+			stfEmail : $('#stfEmail').val(),
+			stfPhone : $('#stfPhone').val(),
+			stfBirth : $('#stfBirth').val(),
+			stfAnnual : $('#stfAnnual').val(),
+			stfHiredDt : $('#stfHiredDt').val(),
+	}
+	
+	$.ajax({
+		type:'post',
+		contentType:'application/json',
+		url:'/staff/add',
+		data:JSON.stringify(formData),
+		success:function(data){
+			location.href=data.url;
+		},
+		error:function(error){
+			console.log(error);
+		}
+	});
+	
+});
+
+</script>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

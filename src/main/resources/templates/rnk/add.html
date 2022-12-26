@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragment/header.html :: fragment-header}"></th:block>
+	<link rel="stylesheet" href="/css/erdLayout.css"/>
+</head>
+
+<body>
+    <th:block th:replace="~{fragment/navbar.html :: fragment-navbar}"></th:block>
+   
+    <div class="content">
+   		<div class="wrap">
+			<div class="left">
+	            <div class="menu">
+	                <h3>직원관리</h3>
+	                <a th:href="@{/staff/list}">직원목록</a>
+	                <a th:href="@{/dept/list}">부서목록</a>
+	                <a th:href="@{/rnk/list}">직급목록</a>
+	                <th:block th:if="${session.authNo == 1}">
+	                <a th:href="@{/staff/add}">직원등록</a>
+	                <a th:href="@{/dept/add}">부서등록</a>
+	                <a class="on" th:href="@{/rnk/add}">직급등록</a>
+	                </th:block>
+	            </div>
+	        </div>
+	    	
+	    		<div id='content' class='right'>
+		            <!-- 컨텐츠 안내 -->
+		            <div class="title">직급목록</div>
+		            <div class="descript">직급을 목록으로 표시합니다.</div>
+	    			
+	    			<div class='tbl-info'>
+	    				<div>
+	    					<table>
+	    						<colgroup>
+	    							<col style="width:20%;">
+	    							<col style="">
+	    						</colgroup>
+	    						<tbody>
+	    							<tr>
+	    								<th>직급명</th>
+	    								<td>
+	    									<input type="text" id="rnkNm" name="rnkNm" maxlength="50"/>
+	    								</td>
+	    							</tr>
+	    						</tbody>
+	    					</table>
+	    				</div>
+	    			<!-- button -->
+	    			<div class="btn-bottom-btn">
+				        <button type="button" id="add">등록</button>
+				        <button type='button'>취소</button>
+				   	</div>
+	    			</div>
+	    		</div>
+    		
+    	</div>
+    </div>
+    
+    <div id="footer" class="footer">
+		<div class="wrap">
+			Copyright ⓒ MMP All Rights Reserved.
+		</div>
+	</div>
+</body>
+
+<script>
+
+document.getElementById('add').addEventListener('click',()=>{ debugger;
+	if($('#rnkNm').val().trim() == "" || $('#rnkNm').val() == null){
+		alert("직급명을 입력해주세요");
+		return false;
+	}
+	
+	var formData = {
+			rnkNm : $('#rnkNm').val().trim(),
+	};
+
+	$.ajax({
+		type:'post',
+		contentType:'application/json',
+		data:JSON.stringify(formData),
+		url:'/rnk/add',
+		success:function(data){
+			if(data.code == "success"){
+				alert('직급이 등록되었습니다');
+				location.href = data.url;
+			}
+			else{
+				alert(data.msg);
+				return false;
+			}
+		},
+		error:function(error){
+			console.log(error);
+		}
+	});
+});
+
+</script>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

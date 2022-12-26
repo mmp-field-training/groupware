@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.mmp.groupware.domain.staff.staffMapper">
+
+<!-- 회원 계정 존재 여부 파악을 위해 카운트 -->
+<select id="countById" parameterType="com.mmp.groupware.web.staff.dto.loginDto" resultType="int">
+	select
+		count(*)
+	from
+		staff
+	where
+		delete_dt is null
+	and
+		stf_id = #{stfId}
+</select>
+
+<select id="findByLoginForm" parameterType="com.mmp.groupware.web.staff.dto.loginDto" resultType="com.mmp.groupware.web.staff.dto.staffDto">
+select
+	stf.stf_no as stfNo
+,	stf.auth_no as authNo
+,	stf.dept_no as deptNo
+,	stf.rnk_no as rnkNo
+,	au.auth_nm as authNm
+,	dt.dept_nm as deptNm
+,	rn.rnk_nm as rnkNm
+,	stf.stf_id as stfId
+,	stf.stf_pwd as stfPwd
+,	stf.stf_nm as stfNm
+,	stf.stf_email as stfEmail
+,	stf.stf_phone as stfPhone
+,	stf.stf_birth as stfBirth
+,	stf.stf_annual as stfAnnual
+,	stf.stf_hired_dt as stfHiredDt
+,	stf.stf_leaved_dt as stfLeavedDt
+,	stf.stf_profile as stfProfile
+,	stf.create_dt as createDt
+,	stf.update_dt as updateDt
+,	stf.delete_dt as deleteDt
+from
+	staff stf
+left join
+	(select * from auth where delete_dt is null) as au
+on
+	stf.auth_no = au.auth_no
+left join
+	(select * from dept where delete_dt is null) as dt
+on
+	stf.dept_no = dt.dept_no
+left join
+	(select * from rnk where delete_dt is null) as rn
+on
+	stf.rnk_no = rn.rnk_no
+where
+	stf.delete_dt is null
+and
+	stf.stf_id = #{stfId}
+</select>
+
+<select id="getStfCnt" parameterType="hashmap" resultType="int">
+	select 
+		count(*)
+	from
+		staff
+	where
+		1=1
+	and 
+		delete_dt is null
+	<if test="keyword != null or keyword.equals('') ">
+		<if test="searchCode == 1">
+	and
+		stf_id like CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="searchCode == 2">
+	and
+		stf_nm like CONCAT('%',#{keyword},'%')
+		</if>
+	</if>
+</select>
+
+<select id="getStfList" parameterType="hashmap" resultType="com.mmp.groupware.web.staff.dto.staffDto">
+select
+	row_number() over() as rownum
+,	stf.stf_no as stfNo
+,	stf.auth_no as authNo
+,	stf.dept_no as deptNo
+,	stf.rnk_no as rnkNo
+,	au.auth_nm as authNm
+,	dt.dept_nm as deptNm
+,	rn.rnk_nm as rnkNm
+,	stf.stf_id as stfId
+,	stf.stf_pwd as stfPwd
+,	stf.stf_nm as stfNm
+,	stf.stf_email as stfEmail
+,	stf.stf_phone as stfPhone
+,	stf.stf_birth as stfBirth
+,	stf.stf_annual as stfAnnual
+,	stf.stf_hired_dt as stfHiredDt
+,	stf.stf_leaved_dt as stfLeavedDt
+,	stf.stf_profile as stfProfile
+,	stf.create_dt as createDt
+,	stf.update_dt as updateDt
+,	stf.delete_dt as deleteDt
+from
+	staff stf
+left join
+	(select * from auth where delete_dt is null) as au
+on
+	stf.auth_no = au.auth_no
+left join
+	(select * from dept where delete_dt is null) as dt
+on
+	stf.dept_no = dt.dept_no
+left join
+	(select * from rnk where delete_dt is null) as rn
+on
+	stf.rnk_no = rn.rnk_no
+where
+	stf.delete_dt is null
+	<if test="keyword != null or keyword.equals('') ">
+		<if test="searchCode == 1">
+	and
+		stf.stf_id like CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="searchCode == 2">
+	and
+		stf.stf_nm like CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="searchCode == null">
+	and
+		stf.stf_nm like CONCAT('%',#{keyword},'%')
+		<if test="stfNo != null">
+		and
+			stf.stf_no != #{stfNo}
+		</if>
+		</if>
+	</if>
+order by rownum desc
+<if test="start != null and end != null">
+limit #{start} , #{end}
+</if>
+
+</select>
+
+<select id="getStfDetail" parameterType="long" 
+	resultType="com.mmp.groupware.web.staff.dto.staffDto">
+select
+	stf.stf_no as stfNo
+,	stf.auth_no as authNo
+,	stf.dept_no as deptNo
+,	stf.rnk_no as rnkNo
+,	au.auth_nm as authNm
+,	dt.dept_nm as deptNm
+,	rn.rnk_nm as rnkNm
+,	stf.stf_id as stfId
+,	stf.stf_pwd as stfPwd
+,	stf.stf_nm as stfNm
+,	stf.stf_email as stfEmail
+,	stf.stf_phone as stfPhone
+,	stf.stf_gender as stfGender
+,	DATE_FORMAT(stf.stf_birth, '%Y-%m-%d') as stfBirth
+,	stf.stf_annual as stfAnnual
+,	DATE_FORMAT(stf.stf_hired_dt, '%Y-%m-%d') as stfHiredDt
+,	DATE_FORMAT(stf.stf_leaved_dt, '%Y-%m-%d') as stfLeavedDt
+,	stf.stf_profile as stfProfile
+,	DATE_FORMAT(stf.create_dt, '%Y-%m-%d') as createDt
+,	DATE_FORMAT(stf.update_dt, '%Y-%m-%d') as updateDt
+,	DATE_FORMAT(stf.delete_dt, '%Y-%m-%d') as deleteDt
+from
+	staff stf
+left join
+	(select * from auth where delete_dt is null) as au
+on
+	stf.auth_no = au.auth_no
+left join
+	(select * from dept where delete_dt is null) as dt
+on
+	stf.dept_no = dt.dept_no
+left join
+	(select * from rnk where delete_dt is null) as rn
+on
+	stf.rnk_no = rn.rnk_no
+where
+	stf.delete_dt is null
+and
+	stf.stf_no = #{stfNo}
+</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

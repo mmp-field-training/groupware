@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mmp.groupware.domain.calendar.calendarMapper">
+
+<select id="getCalendarCnt" parameterType="hashmap" resultType="int">
+    select
+        count(*)
+    from
+        calendar
+    where
+        1=1
+    and
+        delete_dt is null
+    <if test="keyword != null or keyword.equals('') ">
+    and
+        cal_nm like CONCAT('%',#{keyword},'%')
+    </if>
+</select>
+
+<select id="getCalendarList" parameterType="hashmap" resultType="com.mmp.groupware.web.calendar.dto.calendarDto">
+    select
+        cal.cal_no as calNo,
+        cal.cal_nm as calNm,
+        cal.cal_content as calContent,
+        cal.cal_date as calDate,
+        cal.cal_start_time as calStartTIme,
+        cal.cal_end_time as calEndTime,
+        cal.cal_stf_no as calStfNo,
+        DATE_FORMAT(bs.create_dt, '%Y-%m-%d') as createDt,
+        DATE_FORMAT(bs.update_dt, '%Y-%m-%d') as updateDt,
+        DATE_FORMAT(bs.delete_dt, '%Y-%m-%d') as deleteDt,
+        stf.stf_nm as calWrtNm
+    from
+        calendar cal
+    left join
+        staff stf
+    on
+        cal.cal_stf_no = stf.stf_no
+    where
+        cal.delete_dt is null
+    <if test="keyword != null or keyword.equals('') ">
+    and
+        cal.cal_nm like CONCAT('%',#{keyword},'%')
+    </if>
+</select>
+
+<select id="getCalendarDetail" parameterType="long"
+        resultType="com.mmp.groupware.web.calendar.dto.calendarDto">
+select
+    cal.cal_no as calNo,
+    cal.cal_nm as calNm,
+    cal.cal_content as calContent,
+    cal.cal_date as calDate,
+    cal.cal_start_time as calStartTIme,
+    cal.cal_end_time as calEndTime,
+    cal.cal_stf_no as calStfNo,
+    DATE_FORMAT(bs.create_dt, '%Y-%m-%d') as createDt,
+    DATE_FORMAT(bs.update_dt, '%Y-%m-%d') as updateDt,
+    DATE_FORMAT(bs.delete_dt, '%Y-%m-%d') as deleteDt,
+    stf.stf_nm as calWrtNm
+from
+    calendar cal
+left join
+    staff stf
+on
+    cal.cal_stf_no = stf.stf_no
+where
+    cal.delete_dt is null
+and
+    cal.cal_no = {#calNo}
+</select>
+
+</mapper>

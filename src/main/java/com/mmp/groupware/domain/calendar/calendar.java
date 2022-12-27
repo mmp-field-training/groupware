@@ -35,6 +35,10 @@ public class calendar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long calNo;
 
+    // 일정 등록 사원의 사원 등록번호
+    @Column(nullable=true)
+    private Long calStfNo;
+
     // 일정 명
     @Column(nullable=false, length=100)
     private String calNm;

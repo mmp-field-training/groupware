@@ -14,6 +14,8 @@ public class calendarDto {
 
     private Long calNo;
 
+    private Long calStfNo;
+
     private String calNm;
 
     private String calContent;
@@ -23,6 +25,8 @@ public class calendarDto {
     private LocalTime calStartTime;
 
     private LocalTime calEndTime;
+
+    private String calWrtNm;
 
     private LocalDateTime createDt;
 

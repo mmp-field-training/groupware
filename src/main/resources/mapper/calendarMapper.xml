@@ -30,9 +30,9 @@
         cal.cal_start_time as calStartTime,
         cal.cal_end_time as calEndTime,
         cal.cal_stf_no as calStfNo,
-        DATE_FORMAT(bs.create_dt, '%Y-%m-%d') as createDt,
-        DATE_FORMAT(bs.update_dt, '%Y-%m-%d') as updateDt,
-        DATE_FORMAT(bs.delete_dt, '%Y-%m-%d') as deleteDt,
+        DATE_FORMAT(cal.create_dt, '%Y-%m-%d') as createDt,
+        DATE_FORMAT(cal.update_dt, '%Y-%m-%d') as updateDt,
+        DATE_FORMAT(cal.delete_dt, '%Y-%m-%d') as deleteDt,
         stf.stf_nm as calWrtNm
     from
         calendar cal
@@ -59,9 +59,9 @@ select
     cal.cal_start_time as calStartTime,
     cal.cal_end_time as calEndTime,
     cal.cal_stf_no as calStfNo,
-    DATE_FORMAT(bs.create_dt, '%Y-%m-%d') as createDt,
-    DATE_FORMAT(bs.update_dt, '%Y-%m-%d') as updateDt,
-    DATE_FORMAT(bs.delete_dt, '%Y-%m-%d') as deleteDt,
+    DATE_FORMAT(cal.create_dt, '%Y-%m-%d') as createDt,
+    DATE_FORMAT(cal.update_dt, '%Y-%m-%d') as updateDt,
+    DATE_FORMAT(cal.delete_dt, '%Y-%m-%d') as deleteDt,
     stf.stf_nm as calWrtNm
 from
     calendar cal

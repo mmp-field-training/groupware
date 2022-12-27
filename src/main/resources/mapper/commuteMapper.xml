@@ -94,6 +94,6 @@
         where
         com.delete_dt is null
         and
-        DATE_FORMAT(com.create_dt, '%Y-%m') = DATE_FORMAT(date, '%Y-%m')//
+        DATE_FORMAT(com.create_dt, '%Y-%m') = DATE_FORMAT(#{date}, '%Y-%m')
     </select>
 </mapper>

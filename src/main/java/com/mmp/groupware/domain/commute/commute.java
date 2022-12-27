@@ -1,16 +1,13 @@
 package com.mmp.groupware.domain.commute;
 
 import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.DynamicUpdate;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,13 +24,22 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @DynamicUpdate
-public class commute {
 
+public class commute {
+    //출퇴근 여부 등록번호
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long atteNo;
+
+    //사원등록번호
+    @Column(nullable=false)
+    private Long stfNo;
 
     @Column(nullable = true, length = 10)
     private String atteYn;
 
     @Column(nullable = true)
     private LocalDateTime atteTime;
+
 }
 

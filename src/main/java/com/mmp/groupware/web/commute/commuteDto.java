@@ -15,4 +15,20 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class commuteDto {
+    private Long atteNo;
+
+    private Long stfNo;
+
+    private String atteYn;
+
+    private LocalDateTime atteTime;
+
+    private LocalDateTime leavedTime;
+
+    private LocalDateTime createDt;
+
+    private LocalDateTime updateDt;
+
+    private LocalDateTime deleteDt;
+
 }

@@ -38,9 +38,11 @@ public class commute {
     @Column(nullable=false)
     private Long stfNo;
 
+    //출근 시각
     @Column(nullable = true, length = 10)
     private String atteYn;
 
+    //퇴근 시각
     @Column(nullable = true)
     private LocalDateTime atteTime;
 

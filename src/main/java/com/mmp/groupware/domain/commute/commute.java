@@ -27,26 +27,26 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @DynamicUpdate
-
 public class commute {
-    //출퇴근 여부 등록번호
+
+    // 출퇴근 여부 등록번호
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long atteNo;
 
-    //사원등록번호
+    // 사원등록번호
     @Column(nullable=false)
     private Long stfNo;
 
-    //출근 시각
+    // 출근 여부
     @Column(nullable = true, length = 10)
     private String atteYn;
 
-    //퇴근 시각
+    // 출근 시각
     @Column(nullable = true)
     private LocalDateTime atteTime;
 
-    //퇴근시각
+    // 퇴근 시각
     @Column(nullable = true)
     private LocalDateTime leavedTime;
 

@@ -9,6 +9,8 @@ import com.mmp.groupware.domain.calendar.calRefer.calReferRepository;
 import com.mmp.groupware.domain.calendar.calRefer.calReferMapper;
 import com.mmp.groupware.util.fileUtil;
 import com.mmp.groupware.util.sessionUtil;
+import com.mmp.groupware.web.business.dto.bsnReferDto;
+import com.mmp.groupware.web.calendar.dto.calReferDto;
 import com.mmp.groupware.web.calendar.dto.calendarDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -127,6 +129,68 @@ public class calendarService {
             System.out.println(e.getMessage());
             result.put("code", "fail");
             result.put("msg", "일정 등록에 실패하였습니다");
+        }
+
+        return result;
+    }
+
+    // 일정 수정
+    public Map<String, Object> editCal(Map<String, Object> updateForm) {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        try {
+            Optional<calendar> optCal = calendarRepo.findById(Long.parseLong(updateForm.get("calNo").toString()));
+
+            if(optCal.isEmpty()) {
+                result.put("code","fail");
+                result.put("msg","일정 정보 수정에 실패하였습니다.");
+            }
+
+            calendar cal = optCal.get();
+
+            LocalDate calDate = LocalDate.parse((CharSequence) updateForm.get("calDate"));
+            LocalDate calStartTime = LocalDate.parse((CharSequence) updateForm.get("calStartTime"));
+            LocalDate calEndTime = LocalDate.parse((CharSequence) updateForm.get("calEndTime"));
+
+            cal.setUpdateDt(LocalDateTime.now());
+            cal.setCalNm(updateForm.get("calNm").toString());
+            cal.setCalContent(updateForm.get("calContent").toString());
+            cal.setCalDate(calDate.atTime(0, 0, 0, 0));
+            cal.setCalStartTime(LocalTime.from(calStartTime.atTime(0, 0, 0, 0)));
+            cal.setCalEndTime(LocalTime.from(calEndTime.atTime(0, 0, 0, 0)));
+
+            calendarRepo.save(cal);
+
+            if((boolean) updateForm.get("refChgYn")) {
+                // 기존 참조 인원 정보 delete
+                List<calReferDto> prevRefList = calReferMapper.getCalReferList(Long.parseLong(updateForm.get("calNo").toString()));
+                for(int i=0; i<prevRefList.size(); i++) {
+                    Optional<calRefer> optCalf = calReferRepo.findById(prevRefList.get(i).getCalRefNo());
+                    if(optCalf.isPresent()) {
+                        calRefer calf = optCalf.get();
+                        calf.setDeleteDt(LocalDateTime.now());
+                        calReferRepo.save(calf);
+                    }
+                }
+
+                // 참조인원 정보 등록
+                List<Map<String,Object>> currRefList = (List<Map<String, Object>>) updateForm.get("currRefList");
+
+                for(int j=0; j<currRefList.size(); j++) {
+                    calRefer calf = calRefer.builder()
+                            .calNo(Long.parseLong(updateForm.get("calNo").toString()))
+                            .calRefStfNo(Long.parseLong(currRefList.get(j).get("stfNo").toString()))
+                            .createDt(LocalDateTime.now())
+                            .build();
+
+                    calReferRepo.save(calf);
+                }
+            }
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            result.put("code","fail");
+            result.put("msg","일정 정보 수정에 실패하였습니다.");
         }
 
         return result;

@@ -20,11 +20,13 @@ public class calendarDto {
 
     private String calContent;
 
-    private LocalDateTime calDate;
+    private LocalDateTime calStartDate;
 
-    private LocalTime calStartTime;
+    private LocalDateTime calEndDate;
 
-    private LocalTime calEndTime;
+    private LocalDateTime calStartTime;
+
+    private LocalDateTime calEndTime;
 
     private String calWrtNm;
 

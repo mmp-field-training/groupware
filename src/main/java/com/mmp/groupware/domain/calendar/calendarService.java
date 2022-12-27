@@ -11,6 +11,7 @@ import com.mmp.groupware.web.calendar.dto.calendarDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -77,7 +78,7 @@ public class calendarService {
     }
 
     // 일정 등록
-    public Map<String, Object> addCalendar(String insertForm) {
+    public Map<String, Object> addCalendar(String insertForm, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<String, Object>();
 
         try {
@@ -86,18 +87,21 @@ public class calendarService {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-            LocalDate calDate = LocalDate.parse((CharSequence) param.get("calDate"));
-            LocalDate calStartTime = LocalDate.parse((CharSequence) param.get("calStartTime"));
-            LocalDate calEndTime = LocalDate.parse((CharSequence) param.get("calEndTime"));
+            LocalDateTime calStartDate = LocalDateTime.parse((CharSequence) param.get("calStartDate"));
+            LocalDateTime calEndDate = LocalDateTime.parse((CharSequence) param.get("calEndDate"));
+            LocalDateTime calStartTime = LocalDateTime.parse((CharSequence) param.get("calStartTime"));
+            LocalDateTime calEndTime = LocalDateTime.parse((CharSequence) param.get("calEndTime"));
 
             // 1. 일정 등록
             calendar cal = calendar.builder()
                     .calNm(param.get("calNm").toString().trim())
                     .calContent(param.get("calContent").toString())
-                    .calDate(calDate.atTime(0, 0, 0, 0))
-                    .calStartTime(LocalTime.from(calStartTime.atTime(0, 0, 0, 0)))
-                    .calEndTime(LocalTime.from(calEndTime.atTime(0, 0, 0, 0)))
+                    .calStartDate(calStartDate)
+                    .calEndDate(calEndDate)
+                    .calStartTime(calStartTime)
+                    .calEndTime(calEndTime)
                     .createDt(LocalDateTime.now())
+                    .calStfNo(Long.parseLong(sess.sessionGet(request, "stfNo")))
                     .build();
 
             Long calNo = calendarRepo.save(cal).getCalNo();
@@ -131,7 +135,7 @@ public class calendarService {
     }
 
     // 일정 수정
-    public Map<String, Object> editCal(Map<String, Object> updateForm) {
+    public Map<String, Object> editCal(Map<String, Object> updateForm, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<String, Object>();
 
         try {
@@ -144,16 +148,18 @@ public class calendarService {
 
             calendar cal = optCal.get();
 
-            LocalDate calDate = LocalDate.parse((CharSequence) updateForm.get("calDate"));
-            LocalDate calStartTime = LocalDate.parse((CharSequence) updateForm.get("calStartTime"));
-            LocalDate calEndTime = LocalDate.parse((CharSequence) updateForm.get("calEndTime"));
+            LocalDateTime calStartDate = LocalDateTime.parse((CharSequence) updateForm.get("calStartDate"));
+            LocalDateTime calEndDate = LocalDateTime.parse((CharSequence) updateForm.get("calEndDate"));
+            LocalDateTime calStartTime = LocalDateTime.parse((CharSequence) updateForm.get("calStartTime"));
+            LocalDateTime calEndTime = LocalDateTime.parse((CharSequence) updateForm.get("calEndTime"));
 
             cal.setUpdateDt(LocalDateTime.now());
             cal.setCalNm(updateForm.get("calNm").toString());
             cal.setCalContent(updateForm.get("calContent").toString());
-            cal.setCalDate(calDate.atTime(0, 0, 0, 0));
-            cal.setCalStartTime(LocalTime.from(calStartTime.atTime(0, 0, 0, 0)));
-            cal.setCalEndTime(LocalTime.from(calEndTime.atTime(0, 0, 0, 0)));
+            cal.setCalStartDate(calStartDate);
+            cal.setCalEndDate(calEndDate);
+            cal.setCalStartTime(calStartTime);
+            cal.setCalEndTime(calEndTime);
 
             calendarRepo.save(cal);
 

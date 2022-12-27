@@ -5,17 +5,18 @@
 
 <mapper namespace="com.mmp.groupware.domain.commute.commuteMapper">
 
+
     <select id="getWeekComList" parameterType="long" resultType="com.mmp.groupware.web.commute.commuteDto">
 
         select
         commute.atte_no as atteNo
-        ,   commute.stf_no as stfNo
-        ,   commute.atte_yn as atteYn
-        ,   commute.atte_time as atteTime
-        ,   commute.leaved_time as leavedTime
-        ,   DATE_FORMAT(commute.create_dt, '%Y-%m-%d') as createDt
-        ,	DATE_FORMAT(commute.update_dt, '%Y-%m-%d') as updateDt
-        ,	DATE_FORMAT(commute.delete_dt, '%Y-%m-%d') as deleteDt
+        , commute.stf_no as stfNo
+        , commute.atte_yn as atteYn
+        , commute.atte_time as atteTime
+        , commute.leaved_time as leavedTime
+        , DATE_FORMAT(commute.create_dt, '%Y-%m-%d') as createDt
+        , DATE_FORMAT(commute.update_dt, '%Y-%m-%d') as updateDt
+        , DATE_FORMAT(commute.delete_dt, '%Y-%m-%d') as deleteDt
         from
         commute
         left join
@@ -29,5 +30,48 @@
 
     </select>
 
+    <select id="getComList" parameterType="hashmap" resultType="com.mmp.groupware.web.commute.commuteDto">
+        select
+        com.atte_no as atteNo,
+        com.stf_no as stfNo,
+        com.atte_yn as atteYn,
+        com.atte_time as atteTime,
+        com.leaved_time as leavedTime,
+        DATE_FORMAT(com.create_dt, '%Y-%m-%d') as createDt,
+        DATE_FORMAT(com.update_dt, '%Y-%m-%d') as updateDt,
+        DATE_FORMAT(com.delete_dt, '%Y-%m-%d') as deleteDt
+        from
+        commute com
+        left join
+        staff stf
+        on
+        com.stf_no = stf.stf_no
+        where
+        com.delete_dt is null
+
+    </select>
+
+    <select id="getDailyComDetail" parameterType="Date"
+            resultType="com.mmp.groupware.web.commute.commuteDto">
+        select
+        com.atte_no as atteNo,
+        com.stf_no as stfNo,
+        com.atte_yn as atteYn,
+        DATE_FORMAT(com.atte_time, '%T') as atteTime,
+        DATE_FORMAT(com.leaved_time, '%T') as leavedTime,
+        DATE_FORMAT(com.create_dt, '%Y-%m-%d') as createDt,
+        DATE_FORMAT(com.update_dt, '%Y-%m-%d') as updateDt,
+        DATE_FORMAT(com.delete_dt, '%Y-%m-%d') as deleteDt
+        from
+        commute com
+        left join
+        staff stf
+        on
+        com.stf_no = stf.stf_no
+        where
+        com.delete_dt is null
+        and
+        DATE_FORMAT(com.create_dt, '%Y-%m-%d') = #{date}
+    </select>
 
 </mapper>

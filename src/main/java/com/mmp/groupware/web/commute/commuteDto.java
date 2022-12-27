@@ -15,6 +15,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class commuteDto {
+
+    private Long rownum;
+
     private Long atteNo;
 
     private Long stfNo;

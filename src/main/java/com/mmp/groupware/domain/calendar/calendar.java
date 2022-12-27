@@ -47,17 +47,21 @@ public class calendar {
     @Column(nullable=true, length=500)
     private String calContent;
 
-    // 일정 날짜
+    // 일정 시작 날짜
     @Column(nullable = false)
-    private LocalDateTime calDate;
+    private LocalDateTime calStartDate;
+
+    // 일정 종료 날짜
+    @Column(nullable = false)
+    private LocalDateTime calEndDate;
 
     // 일정 시작 시간
     @Column(nullable = false)
-    private LocalTime calStartTime;
+    private LocalDateTime calStartTime;
 
     // 일정 종료 시간
     @Column(nullable = false)
-    private LocalTime calEndTime;
+    private LocalDateTime calEndTime;
 
     // 데이터 생성일자
     @Column(nullable = false)

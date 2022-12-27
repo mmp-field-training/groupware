@@ -5,5 +5,29 @@
 
 <mapper namespace="com.mmp.groupware.domain.commute.commuteMapper">
 
-    
+    <select id="getWeekComList" parameterType="long" resultType="com.mmp.groupware.web.commute.commuteDto">
+
+        select
+        commute.atte_no as atteNo
+        ,   commute.stf_no as stfNo
+        ,   commute.atte_yn as atteYn
+        ,   commute.atte_time as atteTime
+        ,   commute.leaved_time as leavedTime
+        ,   DATE_FORMAT(commute.create_dt, '%Y-%m-%d') as createDt
+        ,	DATE_FORMAT(commute.update_dt, '%Y-%m-%d') as updateDt
+        ,	DATE_FORMAT(commute.delete_dt, '%Y-%m-%d') as deleteDt
+        from
+        commute
+        left join
+        (select * from staff where delete_dt is null) as stf
+        on
+        commute.stf_no = stf.stf_no
+        where
+        stf.delete_dt is null
+        AND DATE_FORMAT(commute.create_dt,'%Y-%m-%d') BETWEEN '2021-12-21' AND DATE_ADD('2022-12-21', INTERVAL 1 WEEK)
+        ORDER BY createDt,stfNo;
+
+    </select>
+
+
 </mapper>

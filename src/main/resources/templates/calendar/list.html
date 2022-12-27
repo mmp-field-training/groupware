@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragment/header.html :: fragment-header}"></th:block>
+    <link rel="stylesheet" href="/css/erdLayout.css"/>
+</head>
+
+<style>
+#referListDiv{
+    margin: 5px;
+    line-height: 2;
+}
+
+#referListDiv span {
+    margin:0px 5px 0px 5px;
+}
+
+</style>
+
+<body>
+    <th:block th:replace="~{fragment/navbar.html :: fragment-navbar}"></th:block>
+    <div class="content">
+        <div class="wrap">
+            <div class="left">
+                <div class="menu">
+                    <h3>일정관리</h3>
+                    <a class="on" th:href="@{/cal/list}">일정목록</a>
+                    <a th:href="@{/cal/add}">일정등록</a>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+</body>
+</html>

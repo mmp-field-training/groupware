@@ -34,6 +34,8 @@ public class staffService {
 	// 로그인 실행 메소드
 	public Map<String, Object> login(loginDto loginForm, HttpServletRequest request){
 		Map<String, Object> result = new HashMap<String, Object>();
+
+		System.out.print("llll" + crypto.strEncoder(loginForm.getStfPwd()));
 		
 		try {
 			// 회원 계정 존재 여부 확인

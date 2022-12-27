@@ -1,6 +1,12 @@
 package com.mmp.groupware.domain.calendar;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mmp.groupware.domain.business.bsnRefer.bsnRefer;
+import com.mmp.groupware.domain.business.bsnRefer.bsnReferMapper;
+import com.mmp.groupware.domain.business.bsnRefer.bsnReferRepository;
+import com.mmp.groupware.domain.calendar.calRefer.calRefer;
+import com.mmp.groupware.domain.calendar.calRefer.calReferRepository;
+import com.mmp.groupware.domain.calendar.calRefer.calReferMapper;
 import com.mmp.groupware.util.fileUtil;
 import com.mmp.groupware.util.sessionUtil;
 import com.mmp.groupware.web.calendar.dto.calendarDto;
@@ -25,6 +31,10 @@ public class calendarService {
 
     private final calendarMapper calendarMapper;
     private final calendarRepository calendarRepo;
+
+    // 참조 관련
+    private final calReferMapper calReferMapper;
+    private final calReferRepository calReferRepo;
 
     // 일정 수 조회
     public int getCalendarCnt(Map<String, Object> search) {
@@ -95,7 +105,19 @@ public class calendarService {
             Long calNo = calendarRepo.save(cal).getCalNo();
 
             // 2. 참조인원 정보 등록
+            List<Map<String,Object>> currRefList = (List<Map<String, Object>>) param.get("currRefList");
 
+            for(int j=0; j<currRefList.size(); j++) {
+                calRefer calf = calRefer.builder()
+                        .calNo(calNo)
+                        .calRefStfNo(Long.parseLong(currRefList.get(j).get("stfNo").toString()))
+                        .createDt(LocalDateTime.now())
+                        .build();
+
+                calReferRepo.save(calf);
+            }
+
+            System.out.println(currRefList);
 
             result.put("code", "success");
             result.put("msg", "일정을 등록하였습니다.");

@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class calendarReferDto {
+public class calReferDto {
 
     private Long calRefNo;
 

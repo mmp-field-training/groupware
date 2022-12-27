@@ -5,20 +5,9 @@
     <link rel="stylesheet" href="/css/erdLayout.css"/>
 </head>
 
-<style>
-#referListDiv{
-    margin: 5px;
-    line-height: 2;
-}
-
-#referListDiv span {
-    margin:0px 5px 0px 5px;
-}
-
-</style>
-
 <body>
     <th:block th:replace="~{fragment/navbar.html :: fragment-navbar}"></th:block>
+
     <div class="content">
         <div class="wrap">
             <div class="left">
@@ -29,10 +18,33 @@
                 </div>
             </div>
 
+            <form method="get">
+                <div id='content' class='right'>
+                    <!-- 컨텐츠 안내 -->
+                    <div class="title">일정</div>
+                    <div class="descript">일정을 캘린더로 표시합니다.</div>
+                </div>
+            </form>
 
-
+        </div>
+    </div>
+    <div id="footer" class="footer">
+        <div class="wrap">
+            Copyright ⓒ MMP All Rights Reserved.
         </div>
     </div>
 
 </body>
+
+<script>
+    function detail(param){
+        debugger;
+        var thisNo = $(param).attr('value');
+
+        if(thisNo != null && thisNo != ''){
+            location.href="/cal/detail?calNo="+thisNo;
+        }
+    }
+</script>
+
 </html>

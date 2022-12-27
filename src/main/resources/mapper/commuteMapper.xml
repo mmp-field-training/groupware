@@ -74,7 +74,7 @@
         DATE_FORMAT(com.create_dt, '%Y-%m-%d') = #{date}
     </select>
     <select id="getMonthlyList" parameterType="Date"
-            resultType="com.mmp.groupware.web.commute.dto.commuteDto">
+            resultType="com.mmp.groupware.web.commute.commuteDto">
         select
         com.atte_no as atteNo,
         com.stf_no as stfNo,
@@ -93,6 +93,6 @@
         where
         com.delete_dt is null
         and
-        DATE_FORMAT(com.create_dt, '%Y-%m') = DATE_FORMAT(date, '%Y-%m')//
+        DATE_FORMAT(com.create_dt, '%Y-%m') = DATE_FORMAT(#{date}, '%Y-%m')
     </select>
 </mapper>

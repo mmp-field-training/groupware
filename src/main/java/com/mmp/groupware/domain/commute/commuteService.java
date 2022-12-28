@@ -3,6 +3,7 @@ package com.mmp.groupware.domain.commute;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import com.mmp.groupware.util.sessionUtil;
 import com.mmp.groupware.web.commute.commuteAddDto;
 import com.mmp.groupware.web.commute.commuteDto;
 
@@ -20,6 +21,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class commuteService {
+    private final sessionUtil sess;
     private final commuteMapper comMapper;
 
     private final commuteRepository comRepo;
@@ -53,7 +55,7 @@ public class commuteService {
 
         try {
             commute com = commute.builder()
-                    .stfNo(addForm.getStfNo())
+                    .stfNo(Long.parseLong(sess.sessionGet(request, "stfNo")))
                     .atteYn(addForm.getAtteYn())
                     .atteTime(addForm.getAtteTime())
                     .leavedTime(addForm.getLeavedTime())
@@ -65,7 +67,8 @@ public class commuteService {
             Long atteNo = comRepo.save(com).getAtteNo();
 
             result.put("code", "success");
-            result.put("url", "/commute?atteNo="+atteNo);
+            result.put("url", "/commute/myList");
+            //result.put("url", "/commute?atteNo="+atteNo);
 
         }catch(Exception e) {
             e.printStackTrace();

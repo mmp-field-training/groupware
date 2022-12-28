@@ -50,6 +50,7 @@
                 <th:block>
                   <th:block>
                     <button type="button" id="attend">출근하기</button>
+
                   </th:block>
                 </th:block>
               </td>
@@ -78,10 +79,59 @@
 </div>
 </body>
 <script>
+    // 오늘의 날짜
 	let date = new Date();
     document.getElementById('date').innerHTML = date.getFullYear() + "년 "
 		+ (date.getMonth() + 1) + "월 " + date.getDate() + "일";
 
+    // 출퇴근 버튼 활성화
+    let isAttended = localStorage.getItem('isAttended');
+
+    if (isAttended == 'true') {
+      document.getElementById('attend').disabled = true;
+	  document.getElementById('leave').disabled = false;
+    } else {
+      document.getElementById('attend').disabled = false;
+	  document.getElementById('leave').disabled = true;
+	}
+
+    // 출근
+    document.getElementById('attend').addEventListener('click',()=>{
+      let atteDate = new Date();
+      var formData = {
+        atteYn : '출근',
+        atteTime : atteDate,
+        leavedTime : null,
+        createDt : atteDate,
+        updateDt : null,
+        deleteDt : null,
+      }
+
+      $.ajax({
+        type: 'post',
+        contentType:'application/json',
+		url:'/commute/add',
+		data:JSON.stringify(formData),
+		success:function(data){
+		    localStorage.setItem('isAttended', 'true');
+
+			location.href=data.url;
+			document.getElementById('attend').disabled = true;
+	        document.getElementById('leave').disabled = false;
+		},
+		error:function(error){
+			console.log(error);
+		}
+      });
+
+    });
+
+    // 퇴근
+    document.getElementById('leave').addEventListener('click',()=>{
+      localStorage.setItem('isAttended', 'false');
+      document.getElementById('attend').disabled = false;
+	  document.getElementById('leave').disabled = true;
+    });
 </script>
 
 </html>

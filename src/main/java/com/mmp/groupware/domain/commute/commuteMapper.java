@@ -24,4 +24,7 @@ public interface commuteMapper {
 
     //월간 출퇴근 조회
     List<commuteDto> getMonthlyList(LocalDate date);
+
+    // 개별 출퇴근 현황 조회
+    List<commuteDto> getPersonalComList(long stfNo);
 }

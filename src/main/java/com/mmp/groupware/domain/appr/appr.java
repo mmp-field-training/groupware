@@ -59,7 +59,7 @@ public class appr {
     private int apprState;
 
     // 반려 사유
-    @Column(nullable=false)
+    @Column(nullable=true)
     private String apprReject;
 
     // 데이터 생성일자

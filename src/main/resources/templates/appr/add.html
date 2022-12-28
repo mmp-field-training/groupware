@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragment/header.html :: fragment-header}"></th:block>
+    <link rel="stylesheet" href="/css/erdLayout.css"/>
+</head>
+
+<style>
+    #referListDiv{
+        margin: 5px;
+        line-height: 2;
+    }
+
+    #referListDiv span {
+        margin:0px 5px 0px 5px;
+    }
+
+</style>
+
+<body>
+<th:block th:replace="~{fragment/navbar.html :: fragment-navbar}"></th:block>
+
+<div class="content">
+    <div class="wrap">
+        <div class="left">
+            <div class="menu">
+                <h3>보고 및 결재</h3>
+                <a th:href="@{/appr/list}">기안목록</a>
+                <a class="on" th:href="@{/appr/add}">기안등록</a>
+            </div>
+        </div>
+
+        <form method="post" id="addForm">
+            <div id='content' class='right'>
+                <!-- 컨텐츠 안내 -->
+                <div class="title">기안등록</div>
+                <div class="descript">기안 내용을 등록합니다.</div>
+
+                <div class='tbl-info'>
+                    <div>
+                        <table>
+                            <colgroup>
+                                <col style="width:20%;">
+                                <col style="">
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th>제목</th>
+                                <td>
+                                    <input type="text" id="apprTit" name="apprTit" style="width:278px" maxlength="100"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>참조</th>
+                                <td style="display: flex; justify-content: flex-start;">
+                                    <a type="button" id="addRefer">참조추가</a>
+                                    <div id="referListDiv">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>문서 구분</th>
+                                <td>
+                                    <th:block th:if="${!#lists.isEmpty(apprDivList)}">
+                                        <select style="width:292px" id="apprDivNo" name="apprDivNo">
+                                            <th:block th:if="${!#lists.isEmpty(apprDivList)}" th:each="item : ${apprDivList}">
+                                                <option th:value="${item.apprDivNo}" th:text="${item.apprDivNm}"></option>
+                                            </th:block>
+                                        </select>
+                                    </th:block>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>기안내용</th>
+                                <td>
+                                    <textarea maxlength="5000" id="apprCont" name="apprCont" style="min-height: 300px; min-width:700px; max-width:700px;"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>첨부파일</th>
+                                <td>
+                                    <input type="file" id="files" name="files" multiple="multiple"/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- button -->
+                    <div class="btn-bottom-btn">
+                        <button type="button" id="add">등록</button>
+                        <button type='button'>취소</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="footer" class="footer">
+    <div class="wrap">
+        Copyright ⓒ MMP All Rights Reserved.
+    </div>
+</div>
+
+<!-- 팝업 -->
+<div class="background">
+    <div class="window">
+        <div class="popup">
+            <div class="pop-header">
+                <h4>참조 추가</h4>
+                <button id="close">x</button>
+            </div>
+            <div class="pop-content">
+                <div class="search-div">
+                    <input type="text" id="keyword" />
+                    <button id="search">검색</button>
+                </div>
+                <div class="list-div">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>선택</th>
+                            <th>아이디</th>
+                            <th>부서</th>
+                            <th>직급</th>
+                            <th>이름</th>
+                        </tr>
+                        </thead>
+                        <tbody id="stfListDiv">
+                        <th:block th:if="${!#lists.isEmpty(stfList)}">
+                            <tr th:each="item , i: ${stfList}">
+                                <td><input type="checkbox" name="refStfs" th:value="${item.stfNo}" th:stfNm="${item.stfNm}"/></td>
+                                <td th:text="${item.stfId}"></td>
+                                <td th:text="${item.deptNm}"></td>
+                                <td th:text="${item.rnkNm}"></td>
+                                <td th:text="${item.stfNm}"></td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pop-buttons">
+                    <button type="button" id="saveRefStf">참조하기</button>
+                    <button type="button">취소</button>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <div>
+
+</body>
+
+<script>
+    // 참조할 사람 검색
+    $("#search").click(function(){debugger;
+        searchStf($('#keyword').val());
+    });
+    $("#keyword").on("keyup", function(e){
+        if(e.keyCode === 13){
+            searchStf($('#keyword').val());
+        }
+    });
+
+    // 참조할 사람 검색
+    function searchStf(keyword){
+        var search = {
+            keyword : keyword
+        }
+
+        $.ajax({
+            type:'post',
+            contentType:'application/json',
+            url:'/bsn/getRefStf',
+            data:JSON.stringify(search),
+            success:function(data){
+                debugger;
+                if(data.stfList.length > 0){
+                    $('#stfListDiv').children().remove();
+                    for(var i=0; i< data.stfList.length; i++){
+                        var strBuffer = "";
+                        strBuffer += "<tr>";
+                        strBuffer += "<td>";
+                        strBuffer += "<input type='checkbox' name='refStfs' value="+data.stfList[i].stfNo+" stfNm="+data.stfList[i].stfNm+">";
+                        strBuffer += "</td>";
+                        strBuffer += "<td>";
+                        strBuffer += data.stfList[i].stfId;
+                        strBuffer += "</td>";
+                        strBuffer += "<td>";
+                        strBuffer += data.stfList[i].deptNm;
+                        strBuffer += "</td>";
+                        strBuffer += "<td>";
+                        strBuffer += data.stfList[i].rnkNm;
+                        strBuffer += "</td>";
+                        strBuffer += "<td>";
+                        strBuffer += data.stfList[i].stfNm;
+                        strBuffer += "</td>";
+                        strBuffer += "</tr>";
+                        $('#stfListDiv').append(strBuffer);
+                    }
+                }
+                else{
+
+                }
+
+            },
+            error:function(error){
+                console.log(error);
+            }
+        });
+
+    }
+
+    //참조 팝업 오픈
+    function show() {
+        document.querySelector(".background").className = "background show";
+    }
+
+    //참조 팝업 닫기
+    function close() {
+        document.querySelector(".background").className = "background";
+    }
+
+    document.querySelector("#addRefer").addEventListener("click", show);
+    document.querySelector("#close").addEventListener("click", close);
+
+
+    // 참조 실행
+    var currRefList = [];
+    $('#saveRefStf').click(function(){
+        var refList = [];
+        for(var i=0; i<$("input[name=refStfs]").length; i++){
+            var checkYn = $("input[name=refStfs]").eq(i).prop('checked');
+            if(checkYn){
+                var map = {
+                    stfNo : $("input[name=refStfs]").eq(i).val(),
+                    stfNm : $("input[name=refStfs]").eq(i).attr("stfNm")
+                }
+                refList.push(map);
+            }
+        }
+
+        currRefList = refList;
+
+        close();
+
+        $("#referListDiv").children().remove();
+
+        for(var j=0; j<refList.length; j++){
+            debugger;
+            var strBuffer = "";
+            strBuffer += "<span value="+refList[j].stfNo+">";
+            strBuffer += "#"+refList[j].stfNm;
+            strBuffer += "</span>";
+
+            $("#referListDiv").append(strBuffer);
+        }
+
+    });
+
+    $('#add').click(function(){
+        if($('#apprTit').val() == '' || $('#apprTit').val() == null){
+            alert('제목을 입력해주세요.');
+            return false;
+        }
+
+        if($('#apprCont').val() == '' || $('#apprCont').val() == null){
+            alert('내용을 입력해주세요.');
+            return false;
+        }
+
+        if($('#apprDivNo').val() == '' || $('#apprDivNo').val() == null){
+            alert('결재문서 유형을 입력해주세요.');
+            return false;
+        }
+
+        if(currRefList.length == 0){
+            if(!confirm("참조 없이 업무등록하시겠습니까?")){
+                return false;
+            }
+        }
+
+        var formData = {
+            apprTit : $('#apprTit').val().trim(),
+            apprCont : $('#apprCont').val(),
+            apprDivNo : $('apprDivNo').val(),
+            currRefList : currRefList
+        };
+
+        var param = new FormData();
+
+        if($('#files')[0].files.length > 0){ // 이미지 첨부 했을 시
+            var filesArr = new Array();
+
+            for(var i=0; i<$('#files')[0].files.length; i++){
+                filesArr.push($('#files')[0].files[i]);
+            }
+
+            for(var j=0; j<filesArr.length; j++){
+                param.append("files", filesArr[j]);
+            }
+        }
+        else{ // 이미지 첨부하지 않았을 시
+
+        }
+
+        param.append("formData" , JSON.stringify(formData));
+
+        $.ajax({
+            type:'post',
+            enctype:"multipart/form-data",
+            processData:false,
+            contentType: false,
+            url:'/appr/add',
+            data:param,
+            success:function(data){
+                location.href=data.url;
+            },
+            error:function(error){
+                console.log(error);
+            }
+        })
+
+
+    });
+
+
+</script>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

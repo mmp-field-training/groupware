@@ -73,6 +73,7 @@
         and
         DATE_FORMAT(com.create_dt, '%Y-%m-%d') = #{date}
     </select>
+
     <select id="getMonthlyList" parameterType="Date"
             resultType="com.mmp.groupware.web.commute.commuteDto">
         select

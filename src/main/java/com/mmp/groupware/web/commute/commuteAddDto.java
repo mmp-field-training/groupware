@@ -11,5 +11,5 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class commuteAddDto {
 
-
+    private Long stfNo;
 }

@@ -49,7 +49,7 @@ public class commuteService {
 
 
     // 출근 (등록)
-    public Map<String, Object> addCommute(commuteAddDto addForm, @RequestParam(value="AtteCode", defaultValue="y") String AtteCode,
+    public Map<String, Object> addCommute(commuteAddDto addForm,
                                           HttpServletRequest request) throws JsonMappingException, JsonProcessingException{
         Map<String, Object> result = new HashMap<String, Object>();
 
@@ -64,7 +64,7 @@ public class commuteService {
                     .deleteDt(null)
                     .build();
 
-
+            com.setAtteYn("y");
             Long atteNo = comRepo.save(com).getAtteNo();
 
             result.put("code", "success");

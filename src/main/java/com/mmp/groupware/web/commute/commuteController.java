@@ -53,7 +53,7 @@ public class commuteController {
     //내 출근정보 조회
     @GetMapping("/myList")
     public String myList(HttpServletRequest request, Model model,long atte_no,
-                         @RequestParam(value="searchCode", defaultValue="1") int searchCode,
+                         //@RequestParam(value="searchCode", defaultValue="1") int searchCode,
                          @ModelAttribute pagingUtil pgn) {
 
         // 세션 체크
@@ -65,8 +65,8 @@ public class commuteController {
         model.addAttribute("menu","record");
 
         try {
-            Map<String, Object> search = new HashMap<String, Object>();
-            search.put("searchCode", searchCode);
+            //Map<String, Object> search = new HashMap<String, Object>();
+            //search.put("searchCode", searchCode);
 
             /*  //페이징
             pgn = new pagingUtil(cnt, pgn.getNowPg() , pgn.getCntPerPg());
@@ -82,7 +82,7 @@ public class commuteController {
 
             // 완료 데이터 세팅 및 조회조건 바인드
             //model.addAttribute("pgn", pgn);
-            model.addAttribute("search",search);
+            //model.addAttribute("search",search);
 
         }catch(Exception e) {
             System.out.println(e.getMessage());

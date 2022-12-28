@@ -43,8 +43,8 @@ public class commuteService {
         return comMapper.getMonthlyList(date);
     }
 
-    public List<commuteDto> getPersonalComList(long stfNo) {
-        return comMapper.getPersonalComList(stfNo);
+    public List<commuteDto> getPersonalComList(long atteNo) {
+        return comMapper.getPersonalComList(atteNo);
     }
 
 

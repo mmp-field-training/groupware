@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.mmp.groupware.domain.commute.commuteService;
+import com.mmp.groupware.domain.staff.staffService;
 import com.mmp.groupware.web.staff.dto.staffDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,7 @@ public class commuteController {
     private final sessionUtil sess;
 
     private final commuteService comServ;
+    private final staffService stfServ;
 
     //출퇴근 등록
     @GetMapping("/add")
@@ -71,14 +73,15 @@ public class commuteController {
     //내 출근정보 조회
 
     @GetMapping("/myList")
-    public String myList(HttpServletRequest request, Model model,long atte_no,
-                         //@RequestParam(value="searchCode", defaultValue="1") int searchCode,
-                         @ModelAttribute pagingUtil pgn) {
+    public String myList(HttpServletRequest request, Model model,@ModelAttribute pagingUtil pgn)
+    {
 
         // 세션 체크
         if(sess.sessionCheck(request, "stfNo")) {
             return "redirect:/staff/login";
         }
+
+
 
         // 상단메뉴
         model.addAttribute("menu","commute");
@@ -95,7 +98,7 @@ public class commuteController {
              */
 
             // 회원 목록 조회
-            List<commuteDto> commuteList = comServ. getPersonalComList(atte_no);
+            List<commuteDto> commuteList = comServ. getPersonalComList(1); //임시Num
 
             model.addAttribute("commuteRecord", commuteList);
 

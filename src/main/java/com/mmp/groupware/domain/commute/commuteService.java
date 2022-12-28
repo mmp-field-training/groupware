@@ -2,17 +2,10 @@ package com.mmp.groupware.domain.commute;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.mmp.groupware.domain.staff.staff;
-<<<<<<< HEAD
-import com.mmp.groupware.domain.staff.staffRepository;
+
 import com.mmp.groupware.web.commute.commuteAddDto;
 import com.mmp.groupware.web.commute.commuteDto;
-import com.mmp.groupware.web.staff.dto.staffAddDto;
-=======
-import com.mmp.groupware.web.commute.commuteAddDto;
-import com.mmp.groupware.web.commute.commuteDto;
->>>>>>> 09d969a84ad138b9948aea681f7ff5a86d008c69
-import com.mmp.groupware.web.staff.dto.staffDto;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,13 +21,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class commuteService {
     private final commuteMapper comMapper;
-<<<<<<< HEAD
 
     private final commuteRepository comRepo;
 
-=======
-    private final commuteRepository comRepo;
->>>>>>> 09d969a84ad138b9948aea681f7ff5a86d008c69
     public List<commuteDto> getComList(Map<String, Object> search) {
         return comMapper.getComList(search);
     }
@@ -52,14 +41,11 @@ public class commuteService {
     public List<commuteDto> getMonthlyList(LocalDate date) {
         return comMapper.getMonthlyList(date);
     }
-<<<<<<< HEAD
-=======
 
     public List<commuteDto> getPersonalComList(long stfNo) {
         return comMapper.getPersonalComList(stfNo);
     }
 
->>>>>>> 09d969a84ad138b9948aea681f7ff5a86d008c69
 
     // 출근 (등록)
     public Map<String, Object> addCommute(commuteAddDto addForm, HttpServletRequest request) throws JsonMappingException, JsonProcessingException{
@@ -92,12 +78,11 @@ public class commuteService {
 
 
     // 퇴근 (등록)
-<<<<<<< HEAD
 
-=======
+
     public Map<String, Object> updateLeavedTime(Long atteNo, HttpServletRequest request) throws JsonMappingException, JsonProcessingException {
         Map<String, Object> result = new HashMap<>();
->>>>>>> 09d969a84ad138b9948aea681f7ff5a86d008c69
+
 
         try {
             Optional<commute> optCom = comRepo.findById(atteNo);

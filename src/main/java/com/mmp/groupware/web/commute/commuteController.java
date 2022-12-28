@@ -29,4 +29,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class commuteController {
 
+    @GetMapping("/add")
+    public String add(HttpServletRequest request, Model model) {
+
+        return "commute/add";
+    }
+
+    @GetMapping("/list")
+    public String list(HttpServletRequest request, Model model) {
+
+        return "commute/list";
+    }
+
+    @GetMapping("/myList")
+    public String myList(HttpServletRequest request, Model model) {
+
+        return "commute/myList";
+    }
 }

@@ -35,6 +35,15 @@ public class commuteService {
         return comMapper.getWeekComList(atteNo);
     }
 
+    //월간 출퇴근 조회
+    public List<commuteDto> getMonthlyList(LocalDate date) {
+        return comMapper.getMonthlyList(date);
+    }
+
+    public List<commuteDto> getPersonalComList(long stfNo) {
+        return comMapper.getPersonalComList(stfNo);
+    }
+
 
     // 출근 (등록)
 
@@ -72,6 +81,5 @@ public class commuteService {
 
         return result;
     }
-
 
 }

@@ -98,14 +98,12 @@ public class apprService {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-            LocalDate apprDt = LocalDate.parse((CharSequence) param.get("apprDt"));
-
             // 1. 기안 글 등록
             appr ap = appr.builder()
                     .apprDivNo((Long) param.get("apprDivNo"))
                     .apprTit(param.get("apprTit").toString().trim())
                     .apprCont(param.get("apprCont").toString())
-                    .apprDt(apprDt.atTime(0, 0, 0, 0))
+                    .apprWrtDt(LocalDateTime.now())
                     .apprState((Integer) param.get("apprState"))
                     .apprReject(param.get("apprReject").toString())
                     .createDt(LocalDateTime.now())
@@ -176,13 +174,11 @@ public class apprService {
             }
 
             appr ap = optAppr.get();
-            LocalDate apprDt = LocalDate.parse((CharSequence) updateForm.get("apprDt"));
 
             ap.setUpdateDt(LocalDateTime.now());
             ap.setApprDivNo((Long) updateForm.get("apprDivNo"));
             ap.setApprTit(updateForm.get("apprTit").toString());
             ap.setApprCont(updateForm.get("apprCont").toString());
-            ap.setApprDt(apprDt.atTime(0, 0, 0, 0));
             ap.setApprState((Integer) updateForm.get("apprState"));
             ap.setApprReject(updateForm.get("apprReject").toString());
 

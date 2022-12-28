@@ -9,6 +9,7 @@ import com.mmp.groupware.web.commute.commuteDto;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -44,13 +45,14 @@ public class commuteService {
         return comMapper.getMonthlyList(date);
     }
 
-    public List<commuteDto> getPersonalComList(long stfNo) {
-        return comMapper.getPersonalComList(stfNo);
+    public List<commuteDto> getPersonalComList(long atteNo) {
+        return comMapper.getPersonalComList(atteNo);
     }
 
 
     // 출근 (등록)
-    public Map<String, Object> addCommute(commuteAddDto addForm, HttpServletRequest request) throws JsonMappingException, JsonProcessingException{
+    public Map<String, Object> addCommute(commuteAddDto addForm,
+                                          HttpServletRequest request) throws JsonMappingException, JsonProcessingException{
         Map<String, Object> result = new HashMap<String, Object>();
 
         try {
@@ -64,6 +66,7 @@ public class commuteService {
                     .deleteDt(null)
                     .build();
 
+            com.setAtteYn("y");
             Long atteNo = comRepo.save(com).getAtteNo();
 
             result.put("code", "success");

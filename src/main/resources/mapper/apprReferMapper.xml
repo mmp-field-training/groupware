@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mmp.groupware.domain.appr.apprRefer.apprReferMapper">
+<select id="getApprReferList" parameterType="long" resultType="com.mmp.groupware.web.appr.dto.apprReferDto">
+select
+    apr.appr_ref_no as apprRefNo,
+    apr.appr_no as apprNo,
+    apr.appr_ref_stf_no as apprRefStfNo,
+    stf.stf_nm as apprRefStfNm
+from
+    appr_refer apr
+left join
+    staff stf
+on
+    apr.appr_ref_stf_no = stf.stf_no
+where
+    apr.delete_dt is null
+and
+    apr.appr_no = #{apprNo}
+</select>
+
+</mapper>

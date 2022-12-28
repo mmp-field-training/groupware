@@ -24,8 +24,6 @@ public class apprDto {
 
     private String apprCont;
 
-    private LocalDateTime apprDt;
-
     private int apprState;
 
     private String apprReject;

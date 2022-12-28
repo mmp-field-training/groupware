@@ -52,14 +52,14 @@ public class appr {
 
     // 기안 작성일자
     @Column(nullable=false, length=100)
-    private LocalDateTime apprDt;
+    private LocalDateTime apprWrtDt;
 
     // 기안 결재 상태
     @Column(nullable=false)
     private int apprState;
 
     // 반려 사유
-    @Column(nullable=false)
+    @Column(nullable=true)
     private String apprReject;
 
     // 데이터 생성일자

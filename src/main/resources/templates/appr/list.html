@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragment/header.html :: fragment-header}"></th:block>
+    <link rel="stylesheet" href="/css/erdLayout.css"/>
+</head>
+
+<body>
+    <th:block th:replace="~{fragment/navbar.html :: fragment-navbar}"></th:block>
+
+    <div class="content">
+        <div class="wrap">
+            <div class="left">
+                <div class="menu">
+                    <h3>보고 및 결재</h3>
+                    <a class="on" th:href="@{/appr/list}">기안목록</a>
+                    <a th:href="@{/appr/add}">기안등록</a>
+            </div>
+        </div>
+
+        <form method="get">
+            <!-- hidden -->
+            <input type="hidden" id="endPg" name="endPg" th:value="${pgn.endPg}">
+            <input type="hidden" id="startPg" name="startPg" th:value="${pgn.startPg}">
+            <input type="hidden" id="nowPg" name="nowPg" th:value="${pgn.nowPg}">
+
+            <div id='content' class='right'>
+                <!-- 컨텐츠 안내 -->
+                <div class="title">보고 및 결재</div>
+                <div class="descript">기안을 목록으로 표시합니다.</div>
+
+                <div class="tbl-search">
+                    <table>
+                        <colgroup>
+                            <col style="width:25%" />
+                            <col style="" />
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>검색어</th>
+                                <td>
+                                    <input id="keyword" name="keyword" type="text" autocomplete="off" th:value="${search.keyword}"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="btn-bottom-btn">
+                    <button type="submit">검색</button>
+                </div>
+
+                <!-- 리스트 영역 -->
+                <div class="tbl-list">
+                    <div>
+                        <b class="a">
+                            총
+                            <span name="totCnt" th:text="|${pgn.total} 건|"></span>
+                        </b>
+                        <select id="cntPerPg" name="cntPerPg">
+                            <th:block th:if="${pgn.cntPerPg == 10}">
+                                <option selected="selected" value="10">10</option>
+                            </th:block>
+                            <th:block th:if="${pgn.cntPerPg != 10}">
+                                <option value="10">10</option>
+                            </th:block>
+                            <th:block th:if="${pgn.cntPerPg == 20}">
+                                <option selected="selected" value="20">20</option>
+                            </th:block>
+                            <th:block th:if="${pgn.cntPerPg != 20}">
+                                <option value="20">20</option>
+                            </th:block>
+                            <th:block th:if="${pgn.cntPerPg == 30}">
+                                <option selected="selected" value="30">30</option>
+                            </th:block>
+                            <th:block th:if="${pgn.cntPerPg != 30}">
+                                <option value="30">30</option>
+                            </th:block>
+                            <th:block th:if="${pgn.cntPerPg == 50}">
+                                <option selected="selected" value="50">50</option>
+                            </th:block>
+                            <th:block th:if="${pgn.cntPerPg != 50}">
+                                <option value="50">50</option>
+                            </th:block>
+                            <th:block th:if="${pgn.cntPerPg == 100}">
+                                <option selected="selected" value="100">100</option>
+                            </th:block>
+                            <th:block th:if="${pgn.cntPerPg != 100}">
+                                <option value="100">100</option>
+                            </th:block>
+                        </select>
+                    </div>
+
+                    <div class="btn-a">
+                        <a>엑셀 다운로드</a>
+                    </div>
+
+                    <table>
+                        <colgroup>
+                            <col style="width:5%">
+                            <col style="width:30%">
+                            <col style="width:20%">
+                            <col style="width:20%">
+                            <col style="">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>기안 제목</th>
+                            <th>작성자</th>
+                            <th>작성일자</th>
+                        </tr>
+                        </thead>
+                        <th:block th:if="${!#lists.isEmpty(apprList)}">
+                            <tbody>
+                            <tr th:each="item , i: ${bsnList}" th:value="${item.apprNo}" onclick="detail(this);">
+                                <!--  <td th:text="${pgn.total} - ${pgn.nowPg-1}*10 - ${i.index + 1}"></td>-->
+                                <td th:text="${item.rownum}"></td>
+                                <td th:text="${item.apprTit}"></td>
+                                <td th:text="${item.apprWrtNm}"></td>
+                                <td th:text="${item.apprWrtDt}"></td>
+                            </tr>
+                            </tbody>
+                        </th:block>
+                        <th:block th:if="${#lists.isEmpty(apprList)}">
+                            <tbody>
+                            <tr>
+                                <td colspan="8">데이터가 존재하지 않습니다.</td>
+                            </tr>
+                            </tbody>
+                        </th:block>
+                    </table>
+                    <br>
+                    <!-- 페이징 영역 -->
+                    <div class="pgn">
+                        <th:block th:if="${pgn}">
+
+                            <th:block th:if="${pgn.startPg != 1}">
+                                <span id="prevPg"><a>&lt;</a></span>
+                            </th:block>
+
+                            <th:block th:each="i : ${pgn.pageList}">
+                                <th:block th:if="${i == pgn.nowPg}">
+                                    <span id="targetPg" th:value="${i}"><b th:text="${i}"></b></span>
+                                </th:block>
+
+                                <th:block th:if="${i != pgn.nowPg}">
+                                    <span class="selectPg" th:value="${i}"><a th:text="${i}"></a></span>
+                                </th:block>
+                            </th:block>
+
+                            <th:block th:if="${pgn.endPg != pgn.lastPg}">
+                                <span id="nextPg"><a>&gt;</a></span>
+                            </th:block>
+
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <div id="footer" class="footer">
+        <div class="wrap">
+            Copyright ⓒ MMP All Rights Reserved.
+        </div>
+    </div>
+
+</body>
+
+<script>
+    function detail(param){
+        debugger;
+        var thisNo = $(param).attr('value');
+
+        if(thisNo != null && thisNo != ''){
+            location.href="/appr/detail?apprNo="+thisNo;
+        }
+    }
+    /** 페이징 클릭 이벤트 */
+    $("#prevPg").click(function(e){
+        $("#nowPg").val(parseInt(parseInt($("#startPg").val()-1)));
+        $("#listForm").submit();
+    });
+
+    $(".selectPg").click(function(e){ debugger;
+        $("#nowPg").val(parseInt($(e.target).text()));
+        $("#listForm").submit();
+    });
+
+    $("#nextPg").click(function(e){
+        $("#nowPg").val(parseInt(parseInt($("#endPg").val()) + 1));
+        $("#listForm").submit();
+    });
+
+    $("#cntPerPg").on('change', function(e){
+        $("#nowPg").val(parseInt(1));
+        $("#listForm").submit();
+    });
+</script>
+
+</html>

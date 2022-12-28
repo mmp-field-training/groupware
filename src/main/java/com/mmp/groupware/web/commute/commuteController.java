@@ -81,7 +81,7 @@ public class commuteController {
         }
 
         // 상단메뉴
-        model.addAttribute("menu","record");
+        model.addAttribute("menu","commute");
 
         try {
             //Map<String, Object> search = new HashMap<String, Object>();

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <th:block th:replace="~{fragment/header.html :: fragment-header}"></th:block>
-  <link rel="stylesheet" href="/css/erdLayout.css"/>
+  <link rel="stylesheet" href="/css/erdLayout.css" />
 </head>
 
 <body>
@@ -15,18 +16,18 @@
         <h3>출퇴근</h3>
         <a th:href="@{/commute/add}">출퇴근하기</a>
         <th:block th:if="${session.authNo == 1}">
-          <a th:href="@{/commute/list}">전체 출퇴근 현황</a>
+          <a class="on" th:href="@{/commute/list}">전체 출퇴근 현황</a>
         </th:block>
         <a th:href="@{/commute/myList}">나의 출퇴근 현황</a>
       </div>
     </div>
-  </div>
 
-  <div id='content' class="right">
-    <div class="title">전체 출퇴근 현황</div>
-    <div class="descript">전체 직원의 출퇴근 현황을 조회합니다.</div>
-  </div>
 
+    <div id='content' class="right">
+      <div class="title">전체 출퇴근 현황</div>
+      <div class="descript">전체 직원의 출퇴근 현황을 조회합니다.</div>
+    </div>
+  </div>
   <div id="footer" class="footer">
     <div class="wrap">
       Copyright ⓒ MMP All Rights Reserved.
@@ -34,4 +35,5 @@
   </div>
 </div>
 </body>
+
 </html>

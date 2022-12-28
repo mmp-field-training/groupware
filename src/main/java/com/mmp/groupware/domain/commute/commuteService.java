@@ -8,6 +8,7 @@ import com.mmp.groupware.web.commute.commuteDto;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -48,7 +49,8 @@ public class commuteService {
 
 
     // 출근 (등록)
-    public Map<String, Object> addCommute(commuteAddDto addForm, HttpServletRequest request) throws JsonMappingException, JsonProcessingException{
+    public Map<String, Object> addCommute(commuteAddDto addForm, @RequestParam(value="AtteCode", defaultValue="y") String AtteCode,
+                                          HttpServletRequest request) throws JsonMappingException, JsonProcessingException{
         Map<String, Object> result = new HashMap<String, Object>();
 
         try {
@@ -61,6 +63,7 @@ public class commuteService {
                     .updateDt(null)
                     .deleteDt(null)
                     .build();
+
 
             Long atteNo = comRepo.save(com).getAtteNo();
 

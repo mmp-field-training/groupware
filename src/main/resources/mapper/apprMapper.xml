@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mmp.groupware.domain.appr.apprMapper">
+
+<select id="getApprCnt" parameterType="hashmap" resultType="int">
+    select
+        count(*)
+    from
+        appr
+    where
+        1=1
+    and
+        delete_dt is null
+    <if test="keyword != null or keyword.equals('') ">
+    and
+        appr_tit like CONCAT('%',#{keyword},'%')
+    </if>
+</select>
+
+<select id="getApprList" parameterType="hashmap" resultType="com.mmp.groupware.web.appr.dto.apprDto">
+    select
+        row_number() over() as rownum,
+        ap.appr_no as apprNo,
+        ap.appr_div_no as apprDivNo,
+        ap.appr_tit as apprTit,
+        ap.appr_cont as apprCont,
+        ap.appr_wrt_dt as apprWrtDt,
+        ap.appr_state as apprState,
+        ap.appr_reject as apprReject,
+        ap.appr_stf_no as apprStfNo,
+        DATE_FORMAT(bs.create_dt, '%Y-%m-%d') as createDt,
+        DATE_FORMAT(bs.update_dt, '%Y-%m-%d') as updateDt,
+        DATE_FORMAT(bs.delete_dt, '%Y-%m-%d') as deleteDt,
+        stf.stf_nm as apprWrtNm
+    from
+        appr ap
+    left join
+        staff stf
+    on
+        ap.appr_stf_no = stf.stf_no
+    where
+        ap.delete_dt is null
+    <if test="keyword != null or keyword.equals('') ">
+    and
+        ap.appr_tit like CONCAT('%',#{keyword},'%')
+    </if>
+    order by rownum desc
+    <if test="start != null and end != null">
+    limit #{start} , #{end}
+    </if>
+
+</select>
+
+<select id="getApprDetail" parameterType="long"
+        resultType="com.mmp.groupware.web.appr.dto.apprDto">
+    select
+        ap.appr_no as apprNo,
+        ap.appr_div_no as apprDivNo,
+        ap.appr_tit as apprTit,
+        ap.appr_cont as apprCont,
+        ap.appr_wrt_dt as apprWrtDt,
+        ap.appr_state as apprState,
+        ap.appr_reject as apprReject,
+        ap.appr_stf_no as apprStfNo,
+        DATE_FORMAT(bs.create_dt, '%Y-%m-%d') as createDt,
+        DATE_FORMAT(bs.update_dt, '%Y-%m-%d') as updateDt,
+        DATE_FORMAT(bs.delete_dt, '%Y-%m-%d') as deleteDt,
+        stf.stf_nm as apprWrtNm
+    from
+        appr ap
+    left join
+        staff stf
+    on
+        ap.appr_stf_no = stf.stf_no
+    where
+        ap.delete_dt is null
+    and
+        ap.appr_no = #{apprNo}
+</select>
+
+</mapper>

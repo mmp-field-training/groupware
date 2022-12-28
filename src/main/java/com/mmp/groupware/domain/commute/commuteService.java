@@ -25,6 +25,10 @@ public class commuteService {
         return comMapper.getWeekComList(atteNo);
     }
 
+    public List<commuteDto> getPersonalComList(long stfNo) {
+        return comMapper.getPersonalComList(stfNo);
+    }
+
 
     // 출근 (등록)
 

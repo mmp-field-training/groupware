@@ -95,4 +95,26 @@
         and
         DATE_FORMAT(com.create_dt, '%Y-%m') = DATE_FORMAT(#{date}, '%Y-%m')
     </select>
+    <select id="getPersonalComList" parameterType="long"
+            resultType="com.mmp.groupware.web.commute.commuteDto">
+        select
+            com.atte_no as atteNo,
+            com.stf_no as stfNo,
+            com.atte_yn as atteYn,
+            DATE_FORMAT(com.atte_time, '%T') as atteTime,
+            DATE_FORMAT(com.leaved_time, '%T') as leavedTime,
+            DATE_FORMAT(com.create_dt, '%Y-%m-%d') as createDt,
+            DATE_FORMAT(com.update_dt, '%Y-%m-%d') as updateDt,
+            DATE_FORMAT(com.delete_dt, '%Y-%m-%d') as deleteDt
+        from
+            commute com
+        left join
+            staff stf
+        on
+            com.stf_no = stf.stf_no
+        where
+            com.delete_dt is null
+        and
+            stf.stf_no = #{stfNo}
+    </select>
 </mapper>

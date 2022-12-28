@@ -52,7 +52,7 @@ public class appr {
 
     // 기안 작성일자
     @Column(nullable=false, length=100)
-    private LocalDateTime apprDt;
+    private LocalDateTime apprWrtDt;
 
     // 기안 결재 상태
     @Column(nullable=false)

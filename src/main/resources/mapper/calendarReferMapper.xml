@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mmp.groupware.domain.calendar.calRefer.calReferMapper">
+
+<select id="getBsnReferList" parameterType="long" resultType="com.mmp.groupware.web.calendar.dto.calReferDto">
+select
+    cr.cal_ref_no as calRefNo,
+    cr.cal_no as calNo,
+    cr.cal_ref_stf_no as calRefStfNo,
+    stf.stf_nm as calRefStfNm
+from
+    cal_refer cr
+left join
+    staff stf
+on
+    cr.cal_ref_stf_no = stf.stf_no
+where
+    cr.delete_dt is null
+and
+    cr.cal_no = #{calNo}
+</select>
+
+</mapper>

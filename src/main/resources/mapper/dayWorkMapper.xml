@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mmp.groupware.domain.dailyWork.dayWork.dayWorkMapper">
+    <select id="getDayWorkCnt" parameterType="hashmap" resultType="int">
+        select
+            count(*)
+        from
+            day_work dw
+        where
+            1=1
+        and
+            delete_dt is null
+        <if test="keyword != null or keyword.equals('') ">
+        and
+            day_work_tit like CONCAT('%', #{keyword}, '%')
+        </if>
+    </select>
+
+    <select id="getDayWorkList" parameterType="hashmap" resultType="com.mmp.groupware.web.dailyWork.dto.dayWorkDto">
+        select
+            row_number() over() as rownum,
+            dw.day_work_no as dayWorkNo,
+            dw.day_work_tit as dayWorkTit,
+            dw.day_work_cont as dayWorkCont,
+            dw.day_work_wrt_dt as dayWorkWrtDt,
+            dw.day_work_wrt_stf_no as dayWorkWrtStfNo,
+            DATE_FORMAT(dw.create_dt, '%Y-%m-%d') as createDt,
+            DATE_FORMAT(dw.update_dt, '%Y-%m-%d') as updateDt,
+            DATE_FORMAT(dw.delete_dt, '%Y-%m-%d') as deleteDt,
+            stf.stf_nm as dayWorkWrtNm
+        from
+            day_work dw
+        left join
+            staff stf
+        on
+            dw.day_work_wrt_stf_no = stf.stf_no
+        where
+            dw.delete_dt is null
+        <if test="keyword != null or keyword.equals('') ">
+        and
+            dw.day_work_tit like CONCAT('%', #{keyword}, '%')
+        </if>
+        order by rownum desc
+        <if test="start != null and end != null">
+        limit #{start}, #{end}
+        </if>
+    </select>
+
+    <select id="getDayWorkDetail" parameterType="long"
+        resultType="com.mmp.groupware.web.dailyWork.dto.dayWorkDto">
+        select
+        dw.day_work_no as dayWorkNo,
+        dw.day_work_tit as dayWorkTit,
+        dw.day_work_cont as dayWorkCont,
+        dw.day_work_wrt_dt as dayWorkWrtDt,
+        DATE_FORMAT(dw.create_dt, '%Y-%m-%d') as createDt,
+        DATE_FORMAT(dw.update_dt, '%Y-%m-%d') as updateDt,
+        DATE_FORMAT(dw.delete_dt, '%Y-%m-%d') as deleteDt,
+        stf.stf_nm as dayWorkWrtNm
+        from
+        day_work dw
+        left join
+        staff stf
+        on
+        dw.day_work_wrt_stf_no = stf.stf_no
+        where
+        dw.delete_dt is null
+        and
+        dw.day_work_no = #{dayWorkNo}
+    </select>
+</mapper>

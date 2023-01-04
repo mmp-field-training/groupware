@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mmp.groupware.web.appr.dto.apprFilesDto;
+import com.mmp.groupware.web.dailyWork.dto.dayWorkFilesDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -20,5 +21,7 @@ public interface attachMapper {
 
 	// 기안 첨부파일 조회
 	List<apprFilesDto> getApprFiles(Long apprNo);
+
+	List<dayWorkFilesDto> getDayWorkFiles(Long dayWorkNo);
 	
 }

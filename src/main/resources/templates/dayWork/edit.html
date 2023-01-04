@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragment/header.html :: fragment-header}"></th:block>
+    <link rel="stylesheet" href="/css/erdLayout.css"/>
+</head>
+
+<style>
+#referListDiv{
+	margin: 5px;
+    line-height: 2;
+}
+
+#referListDiv span {
+	margin:0px 5px 0px 5px;
+}
+
+</style>
+
+<body>
+<th:block th:replace="~{fragment/navbar.html :: fragment-navbar}"></th:block>
+
+<div class="content">
+    <div class="wrap">
+        <div class="left">
+            <div class="menu">
+                <h3>일일 보고 관리</h3>
+                <a class="on" th:href="@{/dayWork/list}">일일 보고 목록</a>
+                <a th:href="@{/dayWork/add}">일일 보고 등록</a>
+            </div>
+        </div>
+
+        <form method="post" id="updateForm">
+
+            <!-- hidden -->
+            <input type="hidden" id="dayWorkNo" name="dayWorkNo" th:value="${dayWorkDto.dayWorkNo}" />
+
+            <div id='content' class='right'>
+                <!-- 컨텐츠 안내 -->
+                <div class="title">일일 보고 수정</div>
+                <div class="descript">일일 보고 정보를 수정합니다.</div>
+
+                <div class='tbl-info'>
+                    <div>
+                        <table>
+                            <colgroup>
+                                <col style="width:22%;">
+                                <col style="">
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th>제목</th>
+                                <td>
+                                    <input type="text" id="dayWorkTit" name="dayWorkTit" style="width:278px" maxlength="100" th:value="${dayWorkDto.dayWorkTit}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>일일 보고 내용</th>
+                                <td>
+                                    <textarea maxlength="5000" id="dayWorkCont" th:text="${dayWorkDto.dayWorkCont}" name="dayWorkCont" style="min-height: 300px; min-width:700px; max-width:700px;"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>첨부파일</th>
+                                <td>
+                                    <input type="file" id="files" name="files" multiple="multiple"/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- button -->
+                    <div class="btn-bottom-btn">
+                        <button type="button" id="add">수정</button>
+                        <button type='button'>취소</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="footer" class="footer">
+    <div class="wrap">
+        Copyright ⓒ MMP All Rights Reserved.
+    </div>
+</div>
+
+</body>
+
+<script>
+$('#add').click(function(){
+	if($('#dayWorkTit').val() == '' || $('#dayWorkTit').val() == null){
+		alert('제목을 입력해주세요.');
+		return false;
+	}
+
+	if($('#dayWorkCont').val() == '' || $('#dayWorkCont').val() == null){
+		alert('내용을 입력해주세요.');
+		return false;
+	}
+
+	var formData = {
+			dayWorkNo : $('#dayWorkNo').val(),
+			dayWorkTit : $('#dayWorkTit').val().trim(),
+			dayWorkCont : $('#dayWorkCont').val()
+	};
+
+	var param = new FormData();
+
+	if($('#files')[0].files.length > 0){ // 이미지 첨부 했을 시
+		var filesArr = new Array();
+
+		for(var i=0; i<$('#files')[0].files.length; i++){
+			filesArr.push($('#files')[0].files[i]);
+		}
+
+		for(var j=0; j<filesArr.length; j++){
+			param.append("files", filesArr[j]);
+		}
+	}
+	else{ // 이미지 첨부하지 않았을 시
+
+	}
+
+	param.append("formData" , JSON.stringify(formData));
+
+	$.ajax({
+		type:'post',
+		enctype:"multipart/form-data",
+		processData:false,
+		contentType: false,
+		url:'/dayWork/edit',
+		data:param,
+		success:function(data){
+			location.href=data.url;
+		},
+		error:function(error){
+			console.log(error);
+		}
+	})
+
+
+});
+
+
+</script>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

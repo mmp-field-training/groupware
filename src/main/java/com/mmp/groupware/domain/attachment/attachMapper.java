@@ -6,12 +6,11 @@ import java.util.Map;
 import com.mmp.groupware.web.appr.dto.apprDivFilesDto;
 import com.mmp.groupware.web.appr.dto.apprFilesDto;
 import com.mmp.groupware.web.board.dto.brdFilesDto;
+import com.mmp.groupware.web.dailyWork.dto.dayWorkFilesDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import com.mmp.groupware.web.business.dto.bsnDto;
 import com.mmp.groupware.web.business.dto.bsnFilesDto;
-import com.mmp.groupware.web.staff.dto.staffDto;
 
 @Mapper
 @Repository
@@ -34,5 +33,7 @@ public interface attachMapper {
 
 	// 전자결재 첨부파일 조회
 	List<apprDivFilesDto> getApprDivFiles(Long apprDivNo);
+
+	List<dayWorkFilesDto> getDayWorkFiles(Long dayWorkNo);
 	
 }

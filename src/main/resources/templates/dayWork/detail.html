@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragment/header.html :: fragment-header}"></th:block>
+    <link rel="stylesheet" href="/css/erdLayout.css"/>
+</head>
+
+<style>
+.deleteTxt{
+    background: none !important;
+    border: none !important;
+}
+
+</style>
+
+<body>
+<th:block th:replace="~{fragment/navbar.html :: fragment-navbar}"></th:block>
+
+<div class="content">
+    <div class="wrap">
+        <div class="left">
+            <div class="menu">
+                <h3>일일 보고</h3>
+                <a class="on" th:href="@{/dayWork/list}">일일 보고 목록</a>
+                <a th:href="@{/dayWork/add}">일일 보고 등록</a>
+            </div>
+        </div>
+
+        <div id='content' class='right'>
+            <!-- 컨텐츠 안내 -->
+            <div class="title">상세정보</div>
+            <div class="descript">일일 보고 정보를 자세히 확인합니다.</div>
+
+            <!-- hidden -->
+            <input type="hidden" id="dayWorkNo" name="dayWorkNo" th:value="${dayWorkDto.dayWorkNo}" style="width:98%;"/>
+            <input type="hidden" id="dayWorkWrtStfNo" name="dayWorkWrtStfNo" th:value="${dayWorkDto.dayWorkWrtStfNo}" style="width:98%;"/>
+
+            <div class='tbl-info'>
+                <div>
+                    <table>
+                        <colgroup>
+                            <col style="width:20%;">
+                            <col style="">
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th>제목</th>
+                            <td th:text="${dayWorkDto.dayWorkTit}"></td>
+                        </tr>
+                        <tr>
+                            <th>작성자</th>
+                            <td th:text="${dayWorkDto.dayWorkWrtNm}"></td>
+                        </tr>
+                        <tr>
+                            <th>작성일자</th>
+                            <td th:text="${dayWorkDto.dayWorkWrtDt}"></td>
+                        </tr>
+                        <tr>
+                            <th>일일 보고 내용</th>
+                            <td th:utext="${dayWorkDto.dayWorkCont}" style="word-break:break-all"></td>
+                        </tr>
+                        <tr>
+                            <th>첨부파일</th>
+                            <td>
+                                <th:block th:if="${!#lists.isEmpty(dayWorkFilesList)}">
+                                    <th:block th:each="item , i: ${dayWorkFilesList}">
+                                        <a th:text="${item.atcOriNm}" th:href='|https://360map.co.kr/mmp-groupware/dayWorkFiles/${item.atcUpNm}|' download="download"></a>
+                                    </th:block>
+                                </th:block>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- button -->
+                <div class="btn-bottom-btn">
+                    <th:block th:if="${session.authNo == 1}">
+                        <button type="button" id="update">수정</button>
+                        <button type="button" id="delete">삭제</button>
+                    </th:block>
+                    <button type='button' id="backList">목록</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="footer" class="footer">
+    <div class="wrap">
+        Copyright ⓒ MMP All Rights Reserved.
+    </div>
+</div>
+
+</body>
+
+<script>
+//목록
+$('#backList').click(function(e){
+	location.href="/dayWork/list";
+});
+//수정
+$('#update').click(function(e){
+	location.href="/dayWork/edit?dayWorkNo="+$('#dayWorkNo').val();
+});
+//삭제
+$('#delete').click(function(e){
+	if(!confirm("삭제하시겠습니까?")){
+		return false;
+	}
+	var param = {
+			dayWorkNo : $("#dayWorkNo").val()
+	};
+
+	$.ajax({
+		type:'post',
+		contentType:'application/json',
+		url:'/dayWork/delete',
+		data:JSON.stringify(param),
+		success:function(data){
+			debugger;
+			if(data.code=="success"){
+				alert("삭제되었습니다");
+				location.href="/dayWork/list";
+			}
+		},
+		error:function(error){
+
+		}
+	});
+});
+
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -22,4 +22,21 @@ where
 	bsf.bsn_no = #{bsnNo}
 </select>
 
+	<select id="getDayWorkFiles" parameterType="long" resultType="com.mmp.groupware.web.business.dto.bsnFilesDto">
+		select
+		dwf.day_work_files_no as dayWorkFilesNo,
+		dwf.atc_no as atcNo,
+		dwf.day_work_no as dayWorkNo,
+		atc.atc_ori_nm as atcOriNm,
+		atc.atc_up_nm as atcUpNm
+		from
+		day_work_files as dwf
+		left join
+		attachment as atc
+		on
+		dwf.atc_no = atc.atc_no
+		where
+		dwf.day_work_no = #{dayWorkNo}
+	</select>
+
 </mapper>

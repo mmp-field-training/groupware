@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mmp.groupware.domain.board.brd.brdMapper">
+
+<select id="getBrdCnt" parameterType="hashmap" resultType="int">
+    select
+        count(*)
+    from
+        brd
+    where
+        1=1
+    and
+        delete_dt is null
+    <if test="keyword != null or keyword.equals('') ">
+    and
+        brd_tit like CONCAT('%',#{keyword},'%')
+    </if>
+</select>
+
+
+<select id="getBrdList" parameterType="hashmap" resultType="com.mmp.groupware.web.board.dto.brdDto">
+    select
+        row_number() over() as rownum,
+        bd.brd_no as brdNo,
+        bd.brd_tit as brdTit,
+        bd.brd_cont as brdCont,
+        bd.brd_wrt_dt as brdWrtDt,
+        bd.brd_wrt_stf_no as brdWrtStfNo,
+        bd.brd_ntc_yn as brdNtcYn,
+        DATE_FORMAT(bd.create_dt, '%Y-%m-%d') as createDt,
+        DATE_FORMAT(bd.update_dt, '%Y-%m-%d') as updateDt,
+        DATE_FORMAT(bd.delete_dt, '%Y-%m-%d') as deleteDt,
+        stf.stf_nm as brdWrtNm
+    from
+        brd bd
+    left join
+        staff stf
+    on
+        bd.brd_wrt_stf_no = stf.stf_no
+    where
+        bd.delete_dt is null
+    <if test="keyword != null or keyword.equals('') ">
+    and
+        bd.brd_tit like CONCAT('%',#{keyword},'%')
+    </if>
+    order by rownum desc
+    <if test="start != null and end != null">
+    limit #{start} , #{end}
+    </if>
+
+</select>
+
+<select id="getBrdDetail" parameterType="long"
+        resultType="com.mmp.groupware.web.board.dto.brdDto">
+    select
+        bd.brd_no as brdNo,
+        bd.brd_tit as brdTit,
+        bd.brd_cont as brdCont,
+        bd.brd_wrt_dt as brdWrtDt,
+        bd.brd_wrt_stf_no as brdWrtStfNo,
+        bd.brd_ntc_yn as brdNtcYn,
+        DATE_FORMAT(bd.create_dt, '%Y-%m-%d') as createDt,
+        DATE_FORMAT(bd.update_dt, '%Y-%m-%d') as updateDt,
+        DATE_FORMAT(bd.delete_dt, '%Y-%m-%d') as deleteDt,
+        stf.stf_nm as brdWrtNm
+    from
+        brd bd
+    left join
+        staff stf
+    on
+        bd.brd_wrt_stf_no = stf.stf_no
+    where
+        bd.delete_dt is null
+    and
+        bd.brd_no = #{brdNo}
+</select>
+
+</mapper>

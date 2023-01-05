@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mmp.groupware.domain.board.brdReply.brdReplyMapper">
+
+<select id="getBrdReplyList" parameterType="long" resultType="com.mmp.groupware.web.board.dto.brdReplyDto">
+    select
+        br.brd_reply_no as brdReplyNo,
+        br.brd_no as brdNo,
+        br.brd_reply_wrt_stf_no as brdReplyWrtStfNo,
+        DATE_FORMAT(br.brd_reply_wrt_dt, '%Y-%m-%d') as brdReplyWrtDt,
+        br.brd_reply_cont as brdReplyCont,
+        br.create_dt as createDt,
+        br.update_dt as updateDt,
+        br.delete_dt as deleteDt,
+        stf.stf_nm as brdReplyWrtNm
+    from
+        brd_reply br
+    left join
+        staff stf
+    on
+        br.brd_reply_wrt_stf_no = stf.stf_no
+    where
+        br.delete_dt is null
+      and
+        br.brd_no = #{brdNo}
+    order by
+        br.create_dt asc
+</select>
+
+</mapper>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragment/header.html :: fragment-header}"></th:block>
+    <link rel="stylesheet" href="/css/erdLayout.css"/>
+</head>
+
+<style>
+    .deleteTxt{
+        background: none !important;
+        border: none !important;
+    }
+
+</style>
+
+<body>
+<th:block th:replace="~{fragment/navbar.html :: fragment-navbar}"></th:block>
+
+<div class="content">
+    <div class="wrap">
+        <div class="left">
+            <div class="menu">
+                <h3>게시판</h3>
+                <a class="on" th:href="@{/brd/list}">게시판 목록</a>
+                <a th:href="@{/brd/add}">게시물 등록</a>
+            </div>
+        </div>
+
+        <div id='content' class='right'>
+            <!-- 컨텐츠 안내 -->
+            <div class="title">상세정보</div>
+            <div class="descript">게시물 정보를 자세히 확인합니다.</div>
+
+            <!-- hidden -->
+            <input type="hidden" id="brdNo" name="brdNo" th:value="${brdDto.brdNo}" style="width:98%;"/>
+            <input type="hidden" id="brdWrtStfNo" name="brdWrtStfNo" th:value="${brdDto.brdWrtStfNo}" style="width:98%;"/>
+
+            <div class='tbl-info'>
+                <div>
+                    <table>
+                        <colgroup>
+                            <col style="width:20%;">
+                            <col style="">
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th>제목</th>
+                            <td th:text="${brdDto.brdTit}"></td>
+                        </tr>
+                        <tr>
+                            <th>공지 여부</th>
+                            <td th:text="${brdDto.brdNtcYn == 'Y' ? 'Y' : 'N'}"></td>
+                        </tr>
+                        <tr>
+                            <th>작성자</th>
+                            <td th:text="${brdDto.brdWrtNm}"></td>
+                        </tr>
+                        <tr>
+                            <th>작성일자</th>
+                            <td th:text="${brdDto.brdWrtDt}"></td>
+                        </tr>
+                        <tr>
+                            <th>내용</th>
+                            <td th:utext="${brdDto.brdCont}" style="word-break:break-all"></td>
+                        </tr>
+                        <tr>
+                            <th>첨부파일</th>
+                            <td>
+                                <th:block th:if="${!#lists.isEmpty(brdFilesList)}">
+                                    <th:block th:each="item , i: ${brdFilesList}">
+                                        <a th:text="${item.atcOriNm}" th:href='|https://360map.co.kr/mmp-groupware/bsnFiles/${item.atcUpNm}|' download="download"></a>
+                                    </th:block>
+                                </th:block>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <th:block th:if="${!#lists.isEmpty(brList)}">
+                    <div class="comment-area">
+                        <ul>
+                            <th:block th:each="item , i: ${brList}">
+                                <li>
+                                    <div th:text="${item.brdReplyWrtNm}"></div>
+                                    <div>
+                                        <span th:text="${item.brdReplyCont}"></span>
+                                        <span th:text="${item.brdReplyWrtDt}"></span>
+                                        <th:block th:if="${item.brdReplyWrtStfNo == session.stfNo}">
+                                            <a class="deleteTxt" style="padding:0 !important;" th:value="${item.brdReplyNo}" onclick="deleteBrdReply(this);">삭제</a>
+                                        </th:block>
+                                    </div>
+                                </li>
+                            </th:block>
+                        </ul>
+                    </div>
+                </th:block>
+
+                <div class="comment-add-area">
+                    <strong th:text="${session.stfNm}"></strong>
+                    <div>
+                        <textarea id="brdReplyCont" name="brdReplyCont"></textarea>
+                        <button type='button' id="addReply">댓글등록</button>
+                    </div>
+                </div>
+
+                <!-- button -->
+                <div class="btn-bottom-btn">
+                    <th:block th:if="${session.authNo == 1}">
+                        <button type="button" id="update">수정</button>
+                        <button type="button" id="delete">삭제</button>
+                    </th:block>
+                    <button type='button' id="backList">목록</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="footer" class="footer">
+    <div class="wrap">
+        Copyright ⓒ MMP All Rights Reserved.
+    </div>
+</div>
+
+</body>
+
+<script>
+    //목록
+    $('#backList').click(function(e){
+        location.href="/brd/list";
+    });
+    //수정
+    $('#update').click(function(e){
+        location.href="/brd/edit?brdNo="+$('#brdNo').val();
+    });
+    //삭제
+    $('#delete').click(function(e){
+        if(!confirm("삭제하시겠습니까?")){
+            return false;
+        }
+        var param = {
+            brdNo : $("#brdNo").val()
+        };
+
+        $.ajax({
+            type:'post',
+            contentType:'application/json',
+            url:'/brd/delete',
+            data:JSON.stringify(param),
+            success:function(data){
+                debugger;
+                if(data.code=="success"){
+                    alert("삭제되었습니다");
+                    location.href="/brd/list";
+                }
+            },
+            error:function(error){
+
+            }
+        });
+    });
+
+    // 코맨트 등록
+    $('#addReply').click(function(){
+        var param = {
+            brdNo : $("#brdNo").val(),
+            brdReplyCont : $("#brdReplyCont").val()
+        };
+
+        $.ajax({
+            type:'post',
+            contentType:'application/json',
+            url:'/brd/addBrdReply',
+            data:JSON.stringify(param),
+            success:function(data){
+                debugger;
+                if(data.code=="success"){
+                    alert("댓글이 등록되었습니다");
+                    location.href=data.url;
+                }
+            },
+            error:function(error){
+
+            }
+        });
+
+    });
+
+    // 코맨트 삭제
+    function deleteBrdReply(param){
+
+        var formData = {
+            brdReplyNo : $(param).attr('value'),
+            brdNo : $('#brdNo').val(),
+            brdWrtStfNo : $('#brdWrtStfNo').val(),
+        }
+
+        $.ajax({
+            type:'post',
+            contentType:'application/json',
+            url:'/brd/deleteBrdReply',
+            data:JSON.stringify(formData),
+            success:function(data){
+                debugger;
+                if(data.code=="success"){
+                    alert("댓글이 삭제되었습니다");
+                    location.href=data.url;
+                }
+            },
+            error:function(error){
+            }
+        });
+        debugger;
+    }
+</script>
+</html>
+

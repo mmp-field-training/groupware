@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mmp.groupware.domain.compSpl.cs.csMapper">
+
+<select id="getCsCnt" parameterType="hashmap" resultType="int">
+    select
+        count(*)
+    from
+        cs
+    where
+        1=1
+    and
+        delete_dt is null
+    <if test="keyword != null or keyword.equals('') ">
+    and
+        cs_nm like CONCAT('%',#{keyword},'%')
+    </if>
+</select>
+
+
+<select id="getCsList" parameterType="hashmap" resultType="com.mmp.groupware.web.compSpl.dto.csDto">
+    select
+        row_number() over() as rownum,
+        cs.cs_no as csNo,
+        cs.atcl_div_no as atclDivNo,
+        cs.atcl_pst_no as atclPstNo,
+        cs.cs_nm as csNm,
+        cs.cs_std as csStd,
+        cs.cs_cnt as csCnt,
+        cs.cs_pcs_dt as csPcsDt,
+        cs.cs_pcs_pay as csPcsPay,
+        cs.cs_comm as csComm,
+        cs.cs_wrt_dt as csWrtDt,
+        cs.cs_wrt_stf_no as csWrtStfNo,
+        DATE_FORMAT(cs.create_dt, '%Y-%m-%d') as createDt,
+        DATE_FORMAT(cs.update_dt, '%Y-%m-%d') as updateDt,
+        DATE_FORMAT(cs.delete_dt, '%Y-%m-%d') as deleteDt,
+        stf.stf_nm as csWrtNm
+    from
+        cs cs
+    left join
+        staff stf
+    on
+        cs.cs_wrt_stf_no = stf.stf_no
+    where
+        cs.delete_dt is null
+    <if test="keyword != null or keyword.equals('') ">
+    and
+        cs.cs_nm like CONCAT('%',#{keyword},'%')
+    </if>
+    order by rownum desc
+    <if test="start != null and end != null">
+    limit #{start} , #{end}
+    </if>
+
+</select>
+
+<select id="getCsDetail" parameterType="long"
+        resultType="com.mmp.groupware.web.compSpl.dto.csDto">
+    select
+        cs.cs_no as csNo,
+        cs.atcl_div_no as atclDivNo,
+        cs.atcl_pst_no as atclPstNo,
+        cs.cs_nm as csNm,
+        cs.cs_std as csStd,
+        cs.cs_cnt as csCnt,
+        cs.cs_pcs_dt as csPcsDt,
+        cs.cs_pcs_pay as csPcsPay,
+        cs.cs_comm as csComm,
+        cs.cs_wrt_dt as csWrtDt,
+        cs.cs_wrt_stf_no as csWrtStfNo,
+        DATE_FORMAT(cs.create_dt, '%Y-%m-%d') as createDt,
+        DATE_FORMAT(cs.update_dt, '%Y-%m-%d') as updateDt,
+        DATE_FORMAT(cs.delete_dt, '%Y-%m-%d') as deleteDt,
+        stf.stf_nm as csWrtNm
+    from
+        cs cs
+    left join
+        staff stf
+    on
+        cs.cs_wrt_stf_no = stf.stf_no
+    where
+        cs.delete_dt is null
+      and
+        cs.cs_no = #{csNo}
+</select>
+
+</mapper>

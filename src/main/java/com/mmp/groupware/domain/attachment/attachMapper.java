@@ -6,6 +6,7 @@ import java.util.Map;
 import com.mmp.groupware.web.appr.dto.apprDivFilesDto;
 import com.mmp.groupware.web.appr.dto.apprFilesDto;
 import com.mmp.groupware.web.board.dto.brdFilesDto;
+import com.mmp.groupware.web.compSpl.dto.csFilesDto;
 import com.mmp.groupware.web.dailyWork.dto.dayWorkFilesDto;
 import com.mmp.groupware.web.pmi.dto.pmiFilesDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -26,13 +27,16 @@ public interface attachMapper {
 	// 공금정보 첨부파일 조회
 	List<pmiFilesDto> getPmiFiles(Long pmiNo);
 
-
 	// 기안 첨부파일 조회
 	List<apprFilesDto> getApprFiles(Long apprNo);
 
 	// 전자결재 첨부파일 조회
 	List<apprDivFilesDto> getApprDivFiles(Long apprDivNo);
 
+	// 일일보고 첨부파일 조회
 	List<dayWorkFilesDto> getDayWorkFiles(Long dayWorkNo);
+
+	// 물품 첨부파일 조회
+	List<csFilesDto> getCsFiles(Long csNo);
 	
 }

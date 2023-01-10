@@ -19,6 +19,6 @@ public interface csMapper {
     List<csDto> getCsList(Map<String, Object> search);
 
     // 물품 상세 조회
-    bsnDto getCsDetail(long csNo);
+    csDto getCsDetail(long csNo);
 
 }

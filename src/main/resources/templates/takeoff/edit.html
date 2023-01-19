@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:replace="fragment/header.html :: fragment-header"></th:block>
+
+    <link rel="stylesheet" href="/css/erdLayout.css" asp-append-version="true" />
+
+</head>
+
+<style>
+#referListDiv{
+	margin: 5px;
+    line-height: 2;
+}
+
+#referListDiv span {
+	margin:0px 5px 0px 5px;
+}
+
+</style>
+
+<body>
+<th:block th:replace="~{fragment/navbar.html :: fragment-navbar}"></th:block>
+
+<div class="content">
+    <div class="wrap">
+        <div class="left">
+            <div class="menu">
+                <h3>연차관리</h3>
+                <a th:href="@{/takeoff/list}">연차목록</a>
+                <a class="on" th:href="@{/takeoff/add}">연차등록</a>
+            </div>
+        </div>
+
+        <div id='content' class='right'>
+            <!-- 컨텐츠 안내 -->
+            <div class="title">연차 정보 수정</div>
+            <div class="descript">연차 정보를 수정합니다.</div>
+
+            <!-- hidden -->
+            <input type="hidden" id="tofNo" name="tofNo" th:value="${tofUptDto.tofNo}" style="width:98%;"/>
+
+            <div class='tbl-info'>
+                <div>
+                    <table>
+                        <colgroup>
+                            <col style="width:20%;">
+                            <col style="">
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th>연차종류</th>
+                            <td>
+                                <select id="takeoffNm">
+                                    <th:block th:if="${tofUptDto.takeoffNm == '연차'}">
+                                        <option value="연차" selected="selected">연차</option>
+                                        <option value="오전반차">오전반차(9:00-14:00 휴무)</option>
+                                        <option value="오후반차">오후반차(14:00-18:00 휴무)</option>
+                                    </th:block>
+                                    <th:block th:if="${tofUptDto.takeoffNm == '오전반차'}">
+                                        <option value="연차" selected="selected">연차</option>
+                                        <option value="오전반차" selected="selected">오전반차(9:00-14:00 휴무)</option>
+                                        <option value="오후반차">오후반차(14:00-18:00 휴무)</option>
+                                    </th:block>
+                                    <th:block th:if="${tofUptDto.takeoffNm == '오후반차'}">
+                                        <option value="연차">연차</option>
+                                        <option value="오전반차">오전반차(9:00-14:00 휴무)</option>
+                                        <option value="오후반차" selected="selected">오후반차(14:00-18:00 휴무)</option>
+                                    </th:block>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>업무시작일자</th>
+                            <td>
+                                <input type="date" id="takeoffStartDt" name="takeoffStartDt" th:value="${tofUptDto.takeoffStartDt}" style="width:278px"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>업무종료일자</th>
+                            <td>
+                                <input type="date" id="takeoffEndDt" name="takeoffEndDt" th:value="${tofUptDto.takeoffEndDt}" style="width:278px"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>연차내용</th>
+                            <td>
+                                <textarea maxlength="5000" id="takeoffCont" name="takeoffCont" th:text="${tofUptDto.takeoffCont}" style="min-height: 300px; min-width:700px; max-width:700px;"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>승인여부</th>
+                            <td>
+                                <select id="takeoffAppryn">
+                                    <th:block th:if="${tofUptDto.takeoffAppryn == '대기'}">
+                                        <option value="대기" selected="selected">대기</option>
+                                        <th:block th:if="${session.authNo == 1}">
+                                            <option value="승인">승인</option>
+                                            <option value="반려">반려</option>
+                                        </th:block>
+                                    </th:block>
+
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- button -->
+                <div class="btn-bottom-btn">
+                    <button type="button" id="update">수정</button>
+                    <button type='button' id="backDetail">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="footer" class="footer">
+    <div class="wrap">
+        Copyright ⓒ MMP All Rights Reserved.
+    </div>
+</div>
+</body>
+
+<script>
+
+// 목록
+$('#backDetail').click(function(e){
+	location.href="/takeoff/detail?tofNo=" + $('#tofNo').val();
+});
+
+// 수정
+$('#update').click(function(e){
+
+	if($('#takeoffNm').val() == '' || $('#takeoffNm').val() == null){
+		alert('연차명을 선택해주세요.');
+		return false;
+	}
+
+	if($('#takeoffStartDt').val() == '' || $('#takeoffStartDt').val() == null){
+		alert('연차 시작일자를 입력해주세요.');
+		return false;
+	}
+
+	if($('#takeoffEndDt').val() == '' || $('#takeoffEndDt').val() == null){
+		alert('연차 종료일자를 입력해주세요.');
+		return false;
+	}
+
+	if($('#takeoffCont').val() == '' || $('#takeoffCont').val() == null){
+		alert('내용을 입력해주세요.');
+		return false;
+	}
+
+	if($('#takeoffAppryn').val() == '' || $('#takeoffAppryn').val() == null){
+		alert('승인여부를 입력해주세요.');
+		return false;
+	}
+
+    if($('#takeoffNm').val()!='연차' && $('#takeoffStartDt').val() != $('#takeoffEndDt').val()){
+		alert('반차는 시작일과 종료일이 같아야합니다.');
+		return false;
+	}
+    if($('#takeoffStartDt').val() > $('#takeoffEndDt').val()){
+		alert('시작일은 종료일보다 앞서야합니다.');
+		return false;
+	}
+
+	var formData = {
+			takeoffNm : $('#takeoffNm').val().trim(),
+			takeoffCont : $('#takeoffCont').val(),
+			takeoffStartDt : $('#takeoffStartDt').val(),
+			takeoffEndDt : $('#takeoffEndDt').val(),
+			takeoffAppryn : $('#takeoffAppryn').val().trim(),
+	}
+
+	$.ajax({
+		type:'post',
+		contentType:'application/json',
+		url:'/takeoff/edit',
+		data:JSON.stringify(formData),
+		success:function(data){
+			debugger;
+			if(data.code=="success"){
+				alert("수정되었습니다.");
+				location.href=data.url;
+			}else{
+				if(typeof data.url != 'undefined'){
+					if(confirm(data.msg)){
+						location.href=data.url;
+					}
+				}
+			}
+		},
+		error:function(error){
+
+		}
+	});
+});
+</script>
+
+</html>
